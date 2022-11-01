@@ -6,23 +6,26 @@ using UnityEngine.AI;
 
 public abstract class MobBase : MonoBehaviour
 {
-    protected NavMeshAgent _agent;
-    protected Animator _animator;
-    protected Transform _lockTarget;
-    protected Rigidbody _rigidbody;
-    protected Define.State _state;
-    protected float _damage;
-    protected float _hp;
-    protected float _attackRange;
-    
+    [SerializeField] protected NavMeshAgent _agent;
+    [SerializeField] protected Animator _animator;
+    [SerializeField] protected Transform _target;
+    [SerializeField] protected Rigidbody _rigidbody;
+    [SerializeField] protected Define.State _state;
+    [SerializeField] protected Define.MobType _type;
+    [SerializeField] protected float _damage;
+    [SerializeField] protected float _hp;
+    [SerializeField] protected float _attackRange;
+    [SerializeField] protected float _speed;
+    public Define.MobType Type { get { return _type; } }
+
     public Transform Target
     {
         get
         {
-            if(_lockTarget == null)
-                _lockTarget = GameObject.Find("@Target").transform;
+            if (_target == null)
+                _target = Managers.Game.Tower.transform;
 
-            return _lockTarget;
+            return _target;
         }
     }
 
@@ -34,19 +37,25 @@ public abstract class MobBase : MonoBehaviour
         }
         set
         {
+            _state = value;
+
             switch (_state)
             {
                 case Define.State.Move:
-                    _animator.CrossFade("Move", 0.1f);
+                    Debug.Log("Move");
+                    _animator.CrossFade("Move", 0.5f);
                     break;
                 case Define.State.Attack:
-                    _animator.CrossFade("Attack", 0.1f);
+                    Debug.Log("Attack");
+                    _animator.CrossFade("Attack", 0.1f, -1, 0);
                     break;
                 case Define.State.Hit:
-                    _animator.CrossFade("Hit", 0.1f);
+                    Debug.Log("Hit");
+                    _animator.CrossFade("Hit", 0.5f);
                     break;
                 case Define.State.Die:
-                    _animator.CrossFade("Die", 0.1f);
+                    Debug.Log("Die");
+                    _animator.CrossFade("Die", 0.5f);
                     break;
             }
         }
@@ -61,7 +70,7 @@ public abstract class MobBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        switch(_state)
+        switch(State)
         {
             case Define.State.Move:
                 UpdateMove();
@@ -69,47 +78,67 @@ public abstract class MobBase : MonoBehaviour
             case Define.State.Attack:
                 UpdateAttack();
                 break;
+            case Define.State.Hit:
+                UpdateHit();
+                break;
             case Define.State.Die:
                 UpdateDie();
                 break;
         }
     }
 
-    public void Init(float hp, float damage, float attackRange)
+    public void Init(float hp, float damage, float speed, float attackRange, Define.MobType type)
     {
         _hp = hp;
         _damage = damage;
         _attackRange = attackRange;
+        _speed = speed;
         _state = Define.State.Move;
+        _type = type;
+        _agent.speed = _speed;
     }
 
     protected virtual void UpdateMove()
     {
+        Debug.Log("Update Move");
+
         if((Target.position - transform.position).magnitude <= _attackRange)
         {
-            UpdateAttack();
+            State = Define.State.Attack;
             return;
         }
 
-        _agent.Move(_lockTarget.position);
-        _state = Define.State.Move;
+        _agent.Move(_target.position * Time.deltaTime);
+        State = Define.State.Move;
     }
 
     protected virtual void UpdateAttack()
     {
-        _state = Define.State.Attack;
+        Debug.Log("Update Attack");
+
+        if ((Target.position - transform.position).magnitude > _attackRange)
+        {
+            State = Define.State.Move;
+            return;
+        }
     }
 
+    protected virtual void UpdateHit()
+    {
+        Debug.Log("Update Hit");
+    }
 
     protected virtual void UpdateDie()
     {
-        Managers.Resource.Instantiate("Mob/DieEffect");
-        Destroy(gameObject);
+        Debug.Log("Update Die");
+        //Managers.Resource.Instantiate("Mob/DieEffect");
     }
+
 
     public void OnDamaged(float damage)
     {
         _hp -= damage;
+        State = Define.State.Hit;
 
         if (_hp <= 0)
         {
@@ -117,8 +146,14 @@ public abstract class MobBase : MonoBehaviour
         }
     }
 
-    public void OnAttack()
+    public void OnAttack() 
     {
-        Managers.Game.Tower.OnDamaged(_damage);
+        Debug.Log("OnAttack");
+        Managers.Game.Tower.OnDamaged(_damage); 
+    }
+
+    public void OnDie()
+    {
+        Debug.Log("Die"); Managers.Resource.Destroy(gameObject); 
     }
 }

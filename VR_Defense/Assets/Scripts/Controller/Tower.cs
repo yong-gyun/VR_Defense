@@ -11,6 +11,7 @@ public class Tower : MonoBehaviour
     {
         _hp -= damage;
 
+        Debug.Log($"On damaged tower HP : {_hp}");
         if(_hp <= 0)
         {
             _hp = 0;

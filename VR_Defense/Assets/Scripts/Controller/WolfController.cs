@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WolfController : MonoBehaviour
+public class WolfController : MobBase
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        
-    }
+        base.Start();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Init(50, 10, 8, 10, Define.MobType.Woolf);
     }
 }

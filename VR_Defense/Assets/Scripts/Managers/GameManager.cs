@@ -12,9 +12,36 @@ public class GameManager
         get
         {
             if(_tower == null)
-                _tower = GameObject.FindObjectOfType<Tower>();
-            
+            {
+                GameObject go = GameObject.FindObjectOfType<Tower>().gameObject;
+                
+                if(go == null)
+                {
+                    go = Managers.Resource.Instantiate("Tower");
+                }
+
+                _tower = go.GetOrAddComponent<Tower>();
+            }
+
             return _tower;
+        }
+    }
+
+    public PlayerController Player
+    {
+        get
+        {
+            if(_player == null)
+            {
+                GameObject go = GameObject.FindObjectOfType<PlayerController>().gameObject;
+
+                if(go == null)
+                    go = Managers.Resource.Instantiate("Character/Player");
+
+                _player = go.GetOrAddComponent<PlayerController>();
+            }
+
+            return _player;
         }
     }
 
@@ -51,7 +78,7 @@ public class GameManager
 
     public void Over()
     {
-
+        Debug.Log("Over");
     }
 
     public PlayerController GetPlayer() { return _player; }
