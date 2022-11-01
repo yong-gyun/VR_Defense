@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public abstract class MobBase : MonoBehaviour
     protected Define.State _state;
     protected float _damage;
     protected float _hp;
+    protected float _attackRange;
     
     public Transform Target
     {
@@ -39,6 +41,9 @@ public abstract class MobBase : MonoBehaviour
                     break;
                 case Define.State.Attack:
                     _animator.CrossFade("Attack", 0.1f);
+                    break;
+                case Define.State.Hit:
+                    _animator.CrossFade("Hit", 0.1f);
                     break;
                 case Define.State.Die:
                     _animator.CrossFade("Die", 0.1f);
@@ -70,24 +75,33 @@ public abstract class MobBase : MonoBehaviour
         }
     }
 
-    public void Init(float hp, float damage)
+    public void Init(float hp, float damage, float attackRange)
     {
         _hp = hp;
         _damage = damage;
+        _attackRange = attackRange;
+        _state = Define.State.Move;
     }
 
-    private void UpdateMove()
+    protected virtual void UpdateMove()
     {
+        if((Target.position - transform.position).magnitude <= _attackRange)
+        {
+            UpdateAttack();
+            return;
+        }
+
         _agent.Move(_lockTarget.position);
+        _state = Define.State.Move;
     }
 
-    private void UpdateAttack()
+    protected virtual void UpdateAttack()
     {
-
+        _state = Define.State.Attack;
     }
 
 
-    private void UpdateDie()
+    protected virtual void UpdateDie()
     {
         Managers.Resource.Instantiate("Mob/DieEffect");
         Destroy(gameObject);

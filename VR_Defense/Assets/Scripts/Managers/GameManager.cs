@@ -49,5 +49,10 @@ public class GameManager
         _player = prefab.GetOrAddComponent<PlayerController>();
     }
 
+    public void Over()
+    {
+
+    }
+
     public PlayerController GetPlayer() { return _player; }
 }

@@ -29,6 +29,7 @@ public class Define
     {
         Move,
         Attack,
+        Hit,
         Die
     }
 
