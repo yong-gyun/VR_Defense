@@ -1,10 +1,9 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class MobBase : MonoBehaviour
+public class MobBase : MonoBehaviour
 {
     public Define.MobType Type { get { return _type; } }
     public float MaxHP { get { return _maxHP; } }
@@ -45,7 +44,7 @@ public abstract class MobBase : MonoBehaviour
             {
                 case Define.State.Move:
                     Debug.Log("Move");
-                    _animator.CrossFade("Move", 0.5f);
+                    _animator.CrossFade("Move", 0.1f);
                     break;
                 case Define.State.Attack:
                     Debug.Log("Attack");
@@ -53,11 +52,11 @@ public abstract class MobBase : MonoBehaviour
                     break;
                 case Define.State.Hit:
                     Debug.Log("Hit");
-                    _animator.CrossFade("Hit", 0.5f);
+                    _animator.CrossFade("Hit", 0.1f);
                     break;
                 case Define.State.Die:
                     Debug.Log("Die");
-                    _animator.CrossFade("Die", 0.5f);
+                    _animator.CrossFade("Die", 0.1f);
                     break;
             }
         }
@@ -79,12 +78,6 @@ public abstract class MobBase : MonoBehaviour
             case Define.State.Attack:
                 UpdateAttack();
                 break;
-            case Define.State.Hit:
-                UpdateHit();
-                break;
-            case Define.State.Die:
-                UpdateDie();
-                break;
         }
     }
 
@@ -104,16 +97,17 @@ public abstract class MobBase : MonoBehaviour
     {
         Debug.Log("Update Move");
 
-        if((Target.position - transform.position).magnitude <= _attackRange)
-        {
-            State = Define.State.Attack;
-            return;
-        }
-
         Vector3 dir = Target.position - transform.position;
         Quaternion qua = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Slerp(transform.rotation, qua, 20 * Time.deltaTime);
-        _agent.Move(Target.position);
+        _agent.SetDestination(Target.position);
+
+        if ((Target.position - transform.position).magnitude <= _attackRange)
+        {
+            State = Define.State.Attack;
+            _agent.SetDestination(transform.position);
+            return;
+        }
     }
 
     protected virtual void UpdateAttack()
@@ -127,33 +121,30 @@ public abstract class MobBase : MonoBehaviour
         }
     }
 
-    protected virtual void UpdateHit()
-    {
-        Debug.Log("Update Hit");
-
-        if ((Target.position - transform.position).magnitude > _attackRange)
-            State = Define.State.Move;
-        else
-            State = Define.State.Attack;
-    }
-
-    protected virtual void UpdateDie()
-    {
-        Debug.Log("Update Die");
-        //Managers.Resource.Instantiate("Mob/DieEffect");
-    }
-
-
     public virtual void OnDamaged(float damage)
     {
         _hp -= damage;
         State = Define.State.Hit;
-
         //@Todo make knock back
 
         if (_hp <= 0)
         {
-            _state = Define.State.Die;
+            State = Define.State.Die;
+        }
+    }
+
+    public virtual void OnHit()
+    {
+        if (_state == Define.State.Die)
+            return;
+
+        if ((Target.position - transform.position).magnitude > _attackRange)
+        {
+            State = Define.State.Move;
+        }
+        else
+        {
+            State = Define.State.Attack;
         }
     }
 
@@ -165,6 +156,7 @@ public abstract class MobBase : MonoBehaviour
 
     public virtual void OnDie()
     {
-        Debug.Log("Die"); Managers.Resource.Destroy(gameObject); 
+        Debug.Log("Die"); 
+        Managers.Resource.Destroy(gameObject); 
     }
 }

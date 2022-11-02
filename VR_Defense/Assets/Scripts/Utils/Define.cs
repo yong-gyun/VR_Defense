@@ -50,6 +50,6 @@ public class Define
     {
         Wolf,
         InfernoDragon,
-        Clab
+        Crab
     }
 }

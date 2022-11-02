@@ -26,14 +26,14 @@ public class PoolManager
     GameObject _root = null;
 
     Queue<WolfController> _wolfPool = new Queue<WolfController>();
-    Queue<InfrnoController> _infrnoPool = new Queue<InfrnoController>();
+    Queue<InfernoController> _infernoPool = new Queue<InfernoController>();
     Queue<CrabController> _crabPool = new Queue<CrabController>();
 
 
     public void Init()
     {
         _wolfPool = CreateQueue<WolfController>(20);
-        _infrnoPool = CreateQueue<InfrnoController>(20);
+        _infernoPool = CreateQueue<InfernoController>(20);
         _crabPool = CreateQueue<CrabController>(20);
     }
 

@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class CrabController : MobBase
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private int shildCount = 3;
 
-    // Update is called once per frame
-    void Update()
+    public override void OnDamaged(float damage)
     {
-        
+        if(shildCount > 0)
+        {
+            shildCount--;
+            return;
+        }
+
+        base.OnDamaged(damage);
     }
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8606208991247045606}
   m_Layer: 0
   m_Name: Wolf
-  m_TagString: Untagged
+  m_TagString: Mob
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,16 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e417fdb0529a5b94d8f4282aa33de7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _agent: {fileID: 0}
-  _animator: {fileID: 0}
-  _target: {fileID: 0}
-  _state: 0
-  _type: 0
-  _damage: 0
-  _maxHP: 0
-  _hp: 0
-  _attackRange: 0
-  _speed: 0
 --- !u!1001 &8606208990879852130
 PrefabInstance:
   m_ObjectHideFlags: 0

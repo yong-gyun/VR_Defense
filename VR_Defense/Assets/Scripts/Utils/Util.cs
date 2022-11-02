@@ -43,8 +43,10 @@ public class Util
                 
                 if(string.IsNullOrEmpty(name) || transform.name == name)
                 {
-                    if (transform.GetComponent<T>() != null)
-                        return transform.GetComponent<T>();
+                    T component = transform.GetComponent<T>();
+
+                    if (component != null)
+                        return component;
                 }
             }
         }
@@ -54,7 +56,7 @@ public class Util
 
     public static GameObject FindChild(GameObject go, string name = null, bool recursive = false)
     {
-        Transform transform = FindChild<GameObject>(go, name, recursive).transform;
+        Transform transform = FindChild<Transform>(go, name, recursive);
 
         if (transform != null)
             return transform.gameObject;

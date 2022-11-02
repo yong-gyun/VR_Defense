@@ -1,5 +1,5 @@
-#define PC
-//#define Oculus
+//#define PC
+#define Oculus
 
 using System.Collections;
 using System.Collections.Generic;
@@ -42,13 +42,13 @@ public static class ARAVRInput
 #endif
     }
 
-    static Transform _LHand = null;
+    static Transform _LController = null;
 
-    public static Transform LHand
+    public static Transform LController
     {
         get
         {
-            if(_LHand == null)
+            if(_LController == null)
             {
 #if PC
                 GameObject lhandObj = new GameObject { name = "LHand" };
@@ -56,11 +56,32 @@ public static class ARAVRInput
                 _LHand = LHand.transform;
                 _LHand.transform.SetParent(Camera.main.transform);
 #elif Oculus
-                _LHand = GameObject.Find("LeftControllerAnchor").transform;
+                _LController = GameObject.Find("LeftControllerAnchor").transform;
 #endif
             }
 
-            return _LHand;
+            return _LController;
+        }
+    }
+
+    static Transform _RController = null;
+
+    public static Transform RController
+    {
+        get
+        {
+            if(_RController == null)
+            {
+#if PC
+                GameObject handObj = new GameObject { name = "RHand" };
+                _RHand = handObj.transform;
+                _RHand.SetParent(Camera.main.transform);
+#elif Oculus
+                _RController = GameObject.Find("RightControllerAnchor").transform;
+#endif
+            }
+
+            return _RController;
         }
     }
 
@@ -72,16 +93,25 @@ public static class ARAVRInput
         {
             if(_RHand == null)
             {
-#if PC
-                GameObject handObj = new GameObject { name = "RHand" };
-                _RHand = handObj.transform;
-                _RHand.SetParent(Camera.main.transform);
-#elif Oculus
-                _RHand = GameObject.Find("RightControllerAnchor").transform;
-#endif
+                _RHand = GameObject.Find("RightHandAnchor").transform;
             }
 
             return _RHand;
+        }
+    }
+
+    static Transform _LHand = null;
+
+    public static Transform LHand
+    {
+        get
+        {
+            if (_LHand == null)
+            {
+                _LHand = GameObject.Find("LeftHandAnchor").transform;
+            }
+
+            return _LHand;
         }
     }
 

@@ -50,6 +50,18 @@ public class UIManager
         canvas.worldCamera = Camera.main;
     }
 
+    public T MakeWorldSpaceUI<T>(Transform parent, string name = null) where T : UI_Base
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
+
+        GameObject go = Managers.Resource.Instantiate($"UI/WorldSpace/{name}", parent);
+
+        Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
+        canvas.renderMode = RenderMode.WorldSpace;
+        return go.GetOrAddComponent<T>();
+    }
+
     public T ShowUIPopup<T>(string name = null) where T : UI_Popup
     {
         if (string.IsNullOrEmpty(name))

@@ -37,6 +37,10 @@ public class Managers : MonoBehaviour
 
             s_instance = Util.GetOrAddComponent<Managers>(go);
             DontDestroyOnLoad(go);
+
+            Game.Init();
+            Data.Init();
+            Pool.Init();
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float damage;
+    private float _damage = 8;
     private Gun _gun = null;
 
     private void Start()
@@ -25,5 +25,6 @@ public class PlayerController : MonoBehaviour
     public void Init()
     {
         _gun = Util.GetOrAddComponent<Gun>(gameObject);
+        _gun.Init(_damage);
     }
 }
