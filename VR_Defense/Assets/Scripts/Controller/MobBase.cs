@@ -6,18 +6,20 @@ using UnityEngine.AI;
 
 public abstract class MobBase : MonoBehaviour
 {
+    public Define.MobType Type { get { return _type; } }
+    public float MaxHP { get { return _maxHP; } }
+
     [SerializeField] protected NavMeshAgent _agent;
     [SerializeField] protected Animator _animator;
     [SerializeField] protected Transform _target;
-    [SerializeField] protected Rigidbody _rigidbody;
     [SerializeField] protected Define.State _state;
     [SerializeField] protected Define.MobType _type;
     [SerializeField] protected float _damage;
+    [SerializeField] protected float _maxHP;
     [SerializeField] protected float _hp;
     [SerializeField] protected float _attackRange;
     [SerializeField] protected float _speed;
-    public Define.MobType Type { get { return _type; } }
-
+    
     public Transform Target
     {
         get
@@ -65,7 +67,6 @@ public abstract class MobBase : MonoBehaviour
     {
         _animator = Util.GetOrAddComponent<Animator>(gameObject);
         _agent = Util.GetOrAddComponent<NavMeshAgent>(gameObject);
-        _rigidbody = Util.GetOrAddComponent<Rigidbody>(gameObject);
     }
 
     protected virtual void Update()
@@ -87,9 +88,10 @@ public abstract class MobBase : MonoBehaviour
         }
     }
 
-    public void Init(float hp, float damage, float speed, float attackRange, Define.MobType type)
+    public virtual void Init(float hp, float damage, float speed, float attackRange, Define.MobType type)
     {
-        _hp = hp;
+        _maxHP = hp;
+        _hp = _maxHP;
         _damage = damage;
         _attackRange = attackRange;
         _speed = speed;
@@ -108,8 +110,10 @@ public abstract class MobBase : MonoBehaviour
             return;
         }
 
-        _agent.Move(_target.position * Time.deltaTime);
-        State = Define.State.Move;
+        Vector3 dir = Target.position - transform.position;
+        Quaternion qua = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, qua, 20 * Time.deltaTime);
+        _agent.Move(Target.position);
     }
 
     protected virtual void UpdateAttack()
@@ -126,6 +130,11 @@ public abstract class MobBase : MonoBehaviour
     protected virtual void UpdateHit()
     {
         Debug.Log("Update Hit");
+
+        if ((Target.position - transform.position).magnitude > _attackRange)
+            State = Define.State.Move;
+        else
+            State = Define.State.Attack;
     }
 
     protected virtual void UpdateDie()
@@ -135,10 +144,12 @@ public abstract class MobBase : MonoBehaviour
     }
 
 
-    public void OnDamaged(float damage)
+    public virtual void OnDamaged(float damage)
     {
         _hp -= damage;
         State = Define.State.Hit;
+
+        //@Todo make knock back
 
         if (_hp <= 0)
         {
@@ -146,13 +157,13 @@ public abstract class MobBase : MonoBehaviour
         }
     }
 
-    public void OnAttack() 
+    public virtual void OnAttack() 
     {
         Debug.Log("OnAttack");
         Managers.Game.Tower.OnDamaged(_damage); 
     }
 
-    public void OnDie()
+    public virtual void OnDie()
     {
         Debug.Log("Die"); Managers.Resource.Destroy(gameObject); 
     }

@@ -48,7 +48,7 @@ public class Define
 
     public enum MobType
     {
-        Woolf,
+        Wolf,
         InfernoDragon,
         Clab
     }

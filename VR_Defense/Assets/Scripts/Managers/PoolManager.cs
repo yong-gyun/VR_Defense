@@ -25,20 +25,33 @@ public class PoolManager
 
     GameObject _root = null;
 
-    Dictionary<Type, Queue<MobBase>> _mobPool = new Dictionary<Type, Queue<MobBase>>();
+    Queue<WolfController> _wolfPool = new Queue<WolfController>();
+    Queue<InfrnoController> _infrnoPool = new Queue<InfrnoController>();
+    Queue<CrabController> _crabPool = new Queue<CrabController>();
+
 
     public void Init()
     {
-        
+        _wolfPool = CreateQueue<WolfController>(20);
+        _infrnoPool = CreateQueue<InfrnoController>(20);
+        _crabPool = CreateQueue<CrabController>(20);
     }
 
-    public Queue<T> CreateQueue<T>(T mob, int Count = 5)
+    public Queue<T> CreateQueue<T>(int Count = 5) where T : MobBase
     {
         Queue<T> myQueue = new Queue<T>();
 
-        for(int i = 0 ; i < Count; i++)
+        string name = typeof(T).Name;
+        int index = name.IndexOf("Controller");
+
+        if (index > 0)
+            name = name.Substring(0, index);
+
+        for (int i = 0 ; i < Count; i++)
         {
-            GameObject go = Managers.Resource.Instantiate($"Character/Monster/{typeof(T).Name}", Root.transform); 
+            GameObject go = Managers.Resource.Instantiate($"Character/Monster/{name}", Root.transform);
+            myQueue.Enqueue(go.GetOrAddComponent<T>());
+            go.SetActive(false);
         }
 
         return myQueue;

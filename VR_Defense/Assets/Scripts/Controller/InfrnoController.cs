@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InfrnoController : MonoBehaviour
+public class InfrnoController : MobBase
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        
+        base.Start();
+        Init(40, 12, 7, 14, Define.MobType.InfernoDragon);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnAttack()
     {
-        
+        Debug.Log("Attack");
+        //Managers.Resource.Instantiate("Item/Fireball").GetOrAddComponent<Fireball>().Init(_damage);
     }
 }

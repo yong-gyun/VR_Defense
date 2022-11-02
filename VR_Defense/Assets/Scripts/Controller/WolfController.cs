@@ -8,6 +8,6 @@ public class WolfController : MobBase
     {
         base.Start();
 
-        Init(50, 10, 8, 10, Define.MobType.Woolf);
+        Init(50, 10, 8, 10, Define.MobType.Wolf);
     }
 }

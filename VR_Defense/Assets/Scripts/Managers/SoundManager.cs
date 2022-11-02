@@ -73,20 +73,25 @@ public class SoundManager
         }
     }
 
-    public void PlayBGM(Define.BGM bgm)
+    public void PlayBGM(Define.BGM type)
     {
         if (_bgmSource.isPlaying)
             _bgmSource.Stop();
 
-        _bgmSource.clip = _bgms[bgm];
+        _bgmSource.clip = _bgms[type];
         _bgmSource.Play();
     }
 
-    public void PlaySFX(Define.SFX sfx, GameObject go)
+    public void PlaySFX(Define.SFX type, GameObject go= null)
     {
-        AudioSource sfxSource = go.GetOrAddComponent<AudioSource>();
+        AudioSource source = null;
 
-        sfxSource.clip = _sfxs[sfx];
-        sfxSource.Play();
+        if (go == null)
+            source = _sfxSource;
+        else
+            source = go.GetOrAddComponent<AudioSource>();
+
+        source.clip = _sfxs[type];
+        source.Play();
     }
 }
