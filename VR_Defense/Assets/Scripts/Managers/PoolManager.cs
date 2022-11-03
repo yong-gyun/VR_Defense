@@ -49,7 +49,7 @@ public class PoolManager
 
         for (int i = 0 ; i < Count; i++)
         {
-            GameObject go = Managers.Resource.Instantiate($"Character/Monster/{name}", Root.transform);
+            GameObject go = Managers.Resource.Instantiate($"Character/{name}", Root.transform);
             myQueue.Enqueue(go.GetOrAddComponent<T>());
             go.SetActive(false);
         }

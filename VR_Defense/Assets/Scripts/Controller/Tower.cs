@@ -6,6 +6,7 @@ public class Tower : MonoBehaviour
 {
     public float HP { get { return _hp; } }
     float _hp = 100;
+    bool isHit;
     GameObject[] blastLocations = new GameObject[3];
 
     private void Start()
@@ -18,7 +19,9 @@ public class Tower : MonoBehaviour
 
     public void OnDamaged(float damage)
     {
-        _hp -= damage;
+        if (isHit)
+            return;
+       _hp -= damage;
 
         Debug.Log($"On damaged tower HP : {_hp}");
         if(_hp <= 0)
@@ -29,23 +32,26 @@ public class Tower : MonoBehaviour
 
     IEnumerator OnDie()
     {
-        if (_hp == 0)
+        if (isHit == true)
             yield break;
-
+        
         _hp = 0;
-    
-        for(int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < blastLocations.Length; j++)
-            {
-                GameObject go = Managers.Resource.Instantiate("Effect/ExplosionParticle", blastLocations[j].transform.position, Quaternion.identity);
-                Managers.Resource.Destroy(go, 3f);
-                yield return new WaitForSeconds(1f);
-            }
+        isHit = true;
 
-            yield return new WaitForSeconds(0.5f);
+        for (int j = 0; j < blastLocations.Length; j++)
+        {
+            GameObject go = Managers.Resource.Instantiate("Effect/ExplosionParticle", blastLocations[j].transform.position, Quaternion.identity);
+            Managers.Resource.Destroy(go, 3f);
+            yield return new WaitForSeconds(0.25f);
         }
 
+        for (int i = 1; i < 3; i++)
+        {
+            GameObject smoke = Managers.Resource.Instantiate("Effect/SmokeParticle", blastLocations[2].transform.position, Quaternion.identity);
+            smoke.transform.localScale = new Vector3(60, 60, 60);
+        }
+
+        yield return new WaitForSeconds(1f);
         Managers.Game.Over();
     }
 }

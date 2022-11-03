@@ -29,7 +29,7 @@ public class Fireball : MonoBehaviour
         if (other.CompareTag("Tower"))
         {
             other.GetComponent<Tower>().OnDamaged(_damage);
-            Managers.Resource.Instantiate("Effect/ExplosionFireball", other.transform.position, Quaternion.identity);
+            Managers.Resource.Instantiate("Effect/ExplosionFireball", transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

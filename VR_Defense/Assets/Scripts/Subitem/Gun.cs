@@ -16,7 +16,7 @@ public class Gun : MonoBehaviour
     public void Init(float damage)
     {
         GameObject gun = Managers.Resource.Instantiate("Item/Gun", ARAVRInput.RHandPosition, Quaternion.identity, ARAVRInput.RHand);
-        gun.transform.localPosition = new Vector3(0.3f, -0.5f, 1);
+        gun.transform.localPosition = new Vector3(0.3f, -0.5f, 0.5f);
         Managers.UI.MakeWorldSpaceUI<UI_Crosshair>(Managers.UI.Root.transform);
         _firePos = Util.FindChild(gun, "FirePos", true).transform;
 
@@ -33,8 +33,6 @@ public class Gun : MonoBehaviour
         if (isShooting == true)
             yield break;
         
-        GameObject go = Managers.Resource.Instantiate("Item/Bullet", _firePos.position, Quaternion.Euler(ARAVRInput.RHandDirection));
-
         Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
         RaycastHit hit;
 
