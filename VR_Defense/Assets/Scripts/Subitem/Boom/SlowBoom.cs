@@ -15,7 +15,9 @@ public class SlowBoom : BoomBase
     {
         float tmpSpeed = obj._agent.speed;
         obj._agent.speed = tmpSpeed / 2;
+        Managers.UI.MakeWorldSpaceUI<UI_Ailment>(gameObject.transform);
         yield return new WaitForSeconds(_duration);
+        
         obj._agent.speed = tmpSpeed;
     }
 }

@@ -118,6 +118,8 @@ public class MobBase : MonoBehaviour
         if ((Target.position - transform.position).magnitude > _attackRange)
         {
             State = Define.State.Move;
+            Quaternion qua = Quaternion.LookRotation(Target.position);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, qua, 20 * Time.deltaTime);
             return;
         }
     }

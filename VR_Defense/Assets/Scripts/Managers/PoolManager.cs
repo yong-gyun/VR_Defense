@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PoolManager
 {
@@ -41,7 +42,7 @@ public class PoolManager
             _poolStack.Push(poolable);
         }
 
-        public Poolable Pop(Transform parent)
+        public Poolable Pop(Vector3 position, Transform parent)
         {
             Poolable poolable = null;
 
@@ -53,11 +54,27 @@ public class PoolManager
             poolable.gameObject.SetActive(true);
 
             if (parent == null)
-                poolable.transform.parent = Managers.Scene.CurrentScene.transform;
+                parent = Managers.Scene.CurrentScene.transform;
 
-            poolable.transform.parent = parent;
+            NavMeshAgent nav = poolable.GetComponent<NavMeshAgent>();
+
+            if (nav != null)
+            {
+                nav.enabled = false;
+
+                poolable.transform.SetParent(parent);
+                poolable.IsUsing = true;
+                poolable.transform.position = position;
+
+                nav.enabled = true;
+
+                return poolable;
+            }
+                
+
+            poolable.transform.SetParent(parent);
             poolable.IsUsing = true;
-
+            poolable.transform.position = position;
             return poolable;
         }
     }
@@ -101,12 +118,13 @@ public class PoolManager
         _pool[name].Push(poolable);
     }
 
-    public Poolable Pop(GameObject original, Transform parent = null)
+    public Poolable Pop(GameObject original, Vector3 position, Transform parent = null)
     {
         if (_pool.ContainsKey(original.name) == false)
             return null;
 
-        return _pool[original.name].Pop(parent);
+        Poolable pool = _pool[original.name].Pop(position, parent);
+        return pool;
     }
 
     public GameObject GetOriginal(string name)

@@ -18,8 +18,6 @@ public class PlayerController : MonoBehaviour
         {
             _gun.OnShooting();
         }
-
-        //ARAVRInput.DrawCrosshair();
     }
     
     public void Init()
