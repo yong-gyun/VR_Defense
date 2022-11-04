@@ -52,6 +52,5 @@ public class Tower : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
-        Managers.Game.Over();
     }
 }

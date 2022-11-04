@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public abstract class UI_Base : MonoBehaviour
+public class UI_Base : MonoBehaviour
 {
     protected Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
 
@@ -35,6 +35,11 @@ public abstract class UI_Base : MonoBehaviour
             if (objects[i] == null)
                 Debug.Log($"Not found this object {names[i]}");
         }
+    }
+
+    public virtual void CloseWorldSpaceUI()
+    {
+        gameObject.SetActive(false);
     }
 
     protected T Get<T>(int index) where T : UnityEngine.Object
@@ -66,5 +71,5 @@ public abstract class UI_Base : MonoBehaviour
         }
     }
 
-    public abstract void Init();
+    public virtual void Init() { }
 }

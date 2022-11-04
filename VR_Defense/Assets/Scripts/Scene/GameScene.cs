@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameScene : MonoBehaviour
+public class GameScene : SceneBase
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Init()
     {
-        
-    }
+        base.Init();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

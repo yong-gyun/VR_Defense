@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DataManager
 {
+    public Dictionary<string, int> User = new Dictionary<string, int>();
+
     public void Init()
     {
 

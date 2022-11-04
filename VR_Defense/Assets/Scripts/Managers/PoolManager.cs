@@ -5,55 +5,123 @@ using UnityEngine;
 
 public class PoolManager
 {
-    public GameObject Root
+    #region //Pool
+    class Pool
     {
-        get
+        public GameObject Original { get; private set; }
+        public Transform Root { get; set; }
+        Stack<Poolable> _poolStack = new Stack<Poolable>();
+
+        public void Init(GameObject original, int count = 5)
         {
-            if(_root == null)
-            {
-                GameObject go = GameObject.Find("@Pool_Root");
+            Original = original;
+            Root = new GameObject().transform;
+            Root.name = $"{original.name}_Root";
 
-                if (go == null)
-                    go = new GameObject { name = "@Pool_Root" };
+            for (int i = 0; i < count; i++)
+                Push(Create());
+        }
 
-                _root = go;
-            }
+        Poolable Create()
+        {
+            GameObject go = UnityEngine.Object.Instantiate(Original);
+            go.name = Original.name;
+            return go.GetOrAddComponent<Poolable>();
+        }
 
-            return _root;
+        public void Push(Poolable poolable)
+        {
+            if (poolable == null)
+                return;
+
+            poolable.transform.parent = Root;
+            poolable.gameObject.SetActive(false);
+            poolable.IsUsing = false;
+
+            _poolStack.Push(poolable);
+        }
+
+        public Poolable Pop(Transform parent)
+        {
+            Poolable poolable = null;
+
+            if (_poolStack.Count > 0)
+                poolable = _poolStack.Pop();
+            else
+                poolable = Create();
+
+            poolable.gameObject.SetActive(true);
+
+            if (parent == null)
+                poolable.transform.parent = Managers.Scene.CurrentScene.transform;
+
+            poolable.transform.parent = parent;
+            poolable.IsUsing = true;
+
+            return poolable;
         }
     }
+    #endregion
 
-    GameObject _root = null;
-
-    Queue<WolfController> _wolfPool = new Queue<WolfController>();
-    Queue<InfernoController> _infernoPool = new Queue<InfernoController>();
-    Queue<CrabController> _crabPool = new Queue<CrabController>();
-
+    Dictionary<string, Pool> _pool = new Dictionary<string, Pool>();
+    Transform _root = null;
 
     public void Init()
     {
-        _wolfPool = CreateQueue<WolfController>(20);
-        _infernoPool = CreateQueue<InfernoController>(20);
-        _crabPool = CreateQueue<CrabController>(20);
-    }
-
-    public Queue<T> CreateQueue<T>(int Count = 5) where T : MobBase
-    {
-        Queue<T> myQueue = new Queue<T>();
-
-        string name = typeof(T).Name;
-        int index = name.IndexOf("Controller");
-
-        if (index > 0)
-            name = name.Substring(0, index);
-
-        for (int i = 0 ; i < Count; i++)
+        if(_root == null)
         {
-            GameObject go = Managers.Resource.Instantiate($"Character/{name}", Root.transform);
-            myQueue.Enqueue(go.GetOrAddComponent<T>());
-            go.SetActive(false);
+            _root = new GameObject { name = "@Pool_Root" }.transform;
+            UnityEngine.Object.DontDestroyOnLoad(_root);
         }
 
-        return myQueue;
+        CreatePool(Managers.Resource.Load<GameObject>("Prefabs/Character/Wolf"), 20);
+        CreatePool(Managers.Resource.Load<GameObject>("Prefabs/Character/Inferno"), 20);
+        CreatePool(Managers.Resource.Load<GameObject>("Prefabs/Character/Crab"), 20);
+    }
+
+    public void CreatePool(GameObject original, int count = 5)
+    {
+        Pool pool = new Pool();
+        pool.Init(original, count);
+        pool.Root.parent = _root;
+
+        _pool.Add(original.name, pool);
+    }
+
+    public void Push(Poolable poolable)
+    {
+        string name = poolable.gameObject.name;
+
+        if(_pool.ContainsKey(name) == false)
+        {
+            GameObject.Destroy(poolable);
+            return;
+        }
+
+        _pool[name].Push(poolable);
+    }
+
+    public Poolable Pop(GameObject original, Transform parent = null)
+    {
+        if (_pool.ContainsKey(original.name) == false)
+            return null;
+
+        return _pool[original.name].Pop(parent);
+    }
+
+    public GameObject GetOriginal(string name)
+    {
+        if (_pool.ContainsKey(name) == false)
+            return null;
+
+        return _pool[name].Original;
+    }
+
+    public void Clear()
+    {
+        foreach (Transform child in _root)
+            GameObject.Destroy(child);
+
+        _pool.Clear();
     }
 }

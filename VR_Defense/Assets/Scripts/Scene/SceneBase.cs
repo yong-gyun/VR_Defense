@@ -5,6 +5,11 @@ using UnityEngine.EventSystems;
 
 public class SceneBase : MonoBehaviour
 {
+    protected virtual void Awake()
+    {
+        Init();
+    }
+
     public virtual void Init()
     {
         UnityEngine.Object obj = FindObjectOfType<EventSystem>();

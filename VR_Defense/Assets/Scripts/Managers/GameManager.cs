@@ -5,19 +5,17 @@ using UnityEngine;
 
 public class GameManager
 {
-    public Dictionary<string, int> User = new Dictionary<string, int>();
-
     public Tower Tower
     {
         get
         {
             if(_tower == null)
             {
-                GameObject go = GameObject.FindObjectOfType<Tower>().gameObject;
+                GameObject go = GameObject.Find("Tower");
                 
                 if(go == null)
                 {
-                    go = Managers.Resource.Instantiate("Tower");
+                    go = Managers.Resource.Instantiate("Build/Tower");
                 }
 
                 _tower = go.GetOrAddComponent<Tower>();
@@ -57,28 +55,6 @@ public class GameManager
     public void Save()
     {
         PlayerPrefs.SetInt("UserCount", _userCount);        
-    }
-
-    public void SetScore(string name, int score)
-    {
-        User.Add(name, score);
-        _userCount++;
-    }
-
-    public void SpawnMob(Define.MobType type)
-    {
-
-    }
-
-    public void SpawnPlayer()
-    {
-        GameObject prefab = Managers.Resource.Instantiate("Character/Player");
-        _player = prefab.GetOrAddComponent<PlayerController>();
-    }
-
-    public void Over()
-    {
-        Debug.Log("Over");
     }
 
     public PlayerController GetPlayer() { return _player; }

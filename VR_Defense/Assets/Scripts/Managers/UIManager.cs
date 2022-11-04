@@ -62,6 +62,17 @@ public class UIManager
         return go.GetOrAddComponent<T>();
     }
 
+    public T ShowWorldSpaceUI<T>() where T : UI_Base
+    {
+        T worldUI = GameObject.FindObjectOfType<T>();
+
+        if (worldUI == null)
+            MakeWorldSpaceUI<T>(null);
+
+        worldUI.gameObject.SetActive(true);
+        return worldUI;
+    }
+
     public T ShowUIPopup<T>(string name = null) where T : UI_Popup
     {
         if (string.IsNullOrEmpty(name))

@@ -8,16 +8,17 @@ public class MobBase : MonoBehaviour
     public Define.MobType Type { get { return _type; } }
     public float MaxHP { get { return _maxHP; } }
 
-    [SerializeField] protected NavMeshAgent _agent;
-    [SerializeField] protected Animator _animator;
-    [SerializeField] protected Transform _target;
-    [SerializeField] protected Define.State _state;
-    [SerializeField] protected Define.MobType _type;
-    [SerializeField] protected float _damage;
-    [SerializeField] protected float _maxHP;
-    [SerializeField] protected float _hp;
-    [SerializeField] protected float _attackRange;
-    [SerializeField] protected float _speed;
+    public NavMeshAgent _agent { get; set; }
+    protected Animator _animator;
+    protected Transform _target;
+    protected GameObject _hpHar;
+    protected Define.State _state;
+    protected Define.MobType _type;
+    protected float _damage;
+    protected float _maxHP;
+    protected float _hp;
+    protected float _attackRange;
+    protected float _speed;
     
     public Transform Target
     {
@@ -156,7 +157,6 @@ public class MobBase : MonoBehaviour
 
     public virtual void OnDie()
     {
-        Debug.Log("Die"); 
-        Managers.Resource.Destroy(gameObject); 
+        Debug.Log("Die");
     }
 }

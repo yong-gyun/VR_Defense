@@ -30,7 +30,8 @@ public class Define
         Move,
         Attack,
         Hit,
-        Die
+        Die,
+        Ailment
     }
 
     public enum AudioSources
