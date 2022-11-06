@@ -10,6 +10,5 @@ public class SceneManagerEx
     public void Load(Define.Scene scene)
     {
         SceneManager.LoadScene(scene.ToString());
-        
     }
 }

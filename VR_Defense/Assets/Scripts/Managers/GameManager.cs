@@ -43,14 +43,11 @@ public class GameManager
         }
     }
 
+    public int CurrentScore { get; set; } = 0;
+    public int CurrentGold { get; set; } = 0;
     Tower _tower = null;
-    PlayerController _player;
+    PlayerController _player = null;
     int _userCount = 0;
-
-    public void Init()
-    {
-
-    }
 
     public void Save()
     {

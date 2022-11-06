@@ -23,7 +23,7 @@ public class UI_Title : UI_Popup
 
     void OnClickStartButton(PointerEventData evtData)
     {
-
+        Managers.Scene.Load(Define.Scene.Game);
     }
 
     void OnClickSettingButton(PointerEventData evtData)

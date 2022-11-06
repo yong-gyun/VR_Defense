@@ -8,5 +8,9 @@ public class GameScene : SceneBase
     {
         base.Init();
 
+        Managers.Game.CurrentGold = 0;
+        Managers.Game.CurrentScore = 0;
+
+        //Managers.UI.ShowUIScene<UI_Countdown>();
     }
 }

@@ -15,23 +15,13 @@ public class Define
         Click
     }
 
-    public enum SFX
-    {
-
-    }
-
-    public enum BGM
-    {
-        
-    }
-
     public enum State
     {
         Move,
         Attack,
         Hit,
         Die,
-        Ailment
+        Stun
     }
 
     public enum AudioSources
@@ -52,5 +42,27 @@ public class Define
         Wolf,
         InfernoDragon,
         Crab
+    }
+
+    public enum BombType
+    {
+        Damage,
+        Slow,
+        Stun
+    }
+
+    public enum Ailment
+    {
+        Stun,
+        Slow
+    }
+
+    public enum BGM
+    {
+
+    }
+    public enum SoundEffect
+    {
+
     }
 }

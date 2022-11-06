@@ -7,6 +7,7 @@ public class MobBase : MonoBehaviour
 {
     public Define.MobType Type { get { return _type; } }
     public float MaxHP { get { return _maxHP; } }
+    public float MoveSpeed { get { return _speed; } }
 
     public NavMeshAgent _agent { get; set; }
     protected Animator _animator;

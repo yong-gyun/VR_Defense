@@ -5,11 +5,8 @@ using UnityEngine.UI;
 
 public class UI_Ailment : UI_Base
 {
-    public enum Ailment
-    {
-        Stun,
-        Slow
-    }
+    Sprite _stunImage;
+    Sprite _slowImage;
 
     enum Images
     {
@@ -20,13 +17,21 @@ public class UI_Ailment : UI_Base
     {
         base.Init();
 
+        _stunImage = Managers.Resource.Load<Sprite>($"Sprites/Stun");
+        _slowImage = Managers.Resource.Load<Sprite>($"Sprites/Slow");
         Bind<Image>(typeof(Images));
     }
 
-    public void Init(Ailment type)
+    public void SetAilment(Define.Ailment type)
     {
-        GetImage((int)Images.AilmentImage).sprite = Managers.Resource.Load<Sprite>($"Sprites/{type}");
+        switch(type)
+        {
+            case Define.Ailment.Stun:
+                GetImage((int)Images.AilmentImage).sprite = _stunImage;
+                break;
+            case Define.Ailment.Slow:
+                GetImage((int)Images.AilmentImage).sprite = _slowImage;
+                break;
+        }
     }
-
-    
 }

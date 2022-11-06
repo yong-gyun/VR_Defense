@@ -4,72 +4,38 @@ using UnityEngine;
 
 public class SoundManager
 {
-    public GameObject Root
-    {
-        get
-        {
-            if(root == null)
-            {
-                root = GameObject.Find("@Sound_Root");
-                
-                if(root == null)
-                {
-                    root = new GameObject { name = "@Sound_Root" };
-                }
-            }
+    Dictionary<Define.SoundEffect, AudioClip> _effectClips = new Dictionary<Define.SoundEffect, AudioClip>();
+    Dictionary<Define.BGM, AudioClip> _bgmClips = new Dictionary<Define.BGM, AudioClip>();
 
-            root.transform.SetParent(GameObject.Find("@Managers").transform);
-            return root;
-        }
-    }
-
-    GameObject root = null;
-
-    Dictionary<Define.BGM, AudioClip> _bgms = new Dictionary<Define.BGM, AudioClip>();
-    Dictionary<Define.SFX, AudioClip> _sfxs = new Dictionary<Define.SFX, AudioClip>();
-
+    AudioSource[] _effectSources = new AudioSource[System.Enum.GetValues(typeof(Define.SoundEffect)).Length];
     AudioSource _bgmSource = null;
-    AudioSource _sfxSource = null;
 
     public void Init()
     {
-        GameObject bgm = GameObject.Find("@BGM");
+        GameObject root = GameObject.Find("@Sound");
 
-        if(bgm == null)
-            bgm = new GameObject { name = "@BGM" };
-
-        _bgmSource = bgm.GetOrAddComponent<AudioSource>();
-
-        GameObject sfx = GameObject.Find("@SFX");
-
-        if (sfx == null)
-            sfx = new GameObject { name = "@SFX" };
-
-        _sfxSource = sfx.GetOrAddComponent<AudioSource>();
-
-        for(int i = 0; i < System.Enum.GetValues(typeof(Define.BGM)).Length; i++)
+        if(root == null)
         {
-            AudioClip clip = Managers.Resource.Load<AudioClip>($"Sound/{(Define.BGM) i}");
-            _bgms.Add((Define.BGM)i, clip);
-        }
+            root = new GameObject { name = "@Sound" };
+            Object.DontDestroyOnLoad(root);
+            
+            for(int i = 0; i > System.Enum.GetValues(typeof(Define.BGM)).Length; i++)
+            {
+                AudioClip clip = Managers.Resource.Load<AudioClip>($"Sound/BGM/{(Define.BGM)i}");
+                _bgmClips.Add((Define.BGM)i, clip);
+            }
 
-        for (int i = 0; i < System.Enum.GetValues(typeof(Define.SFX)).Length; i++)
-        {
-            AudioClip clip = Managers.Resource.Load<AudioClip>($"Sound/{(Define.SFX)i}");
-            _sfxs.Add((Define.SFX) i, clip);
-        }
-    }
+            for (int i = 0; i > System.Enum.GetValues(typeof(Define.SoundEffect)).Length; i++)
+            {
+                AudioClip clip = Managers.Resource.Load<AudioClip>($"Sound/Effect/{(Define.SoundEffect) i}");
+                _effectClips.Add((Define.SoundEffect) i, clip);
+            }
 
-    public void SetVolume(float volume = 1, Define.AudioSources source = Define.AudioSources.Unknown)
-    {
-        switch(source)
-        {
-            case Define.AudioSources.BGM:
-                _bgmSource.volume = volume;
-                break;
-            case Define.AudioSources.SFX:
-                _sfxSource.volume = volume;
-                break;
+            for(int i = 0; i < _effectSources.Length; i++)
+            {
+                GameObject go = new GameObject { name = $"{(Define.SoundEffect) i}" };
+                _effectSources[i] = go.AddComponent<AudioSource>();
+            }
         }
     }
 
@@ -78,20 +44,33 @@ public class SoundManager
         if (_bgmSource.isPlaying)
             _bgmSource.Stop();
 
-        _bgmSource.clip = _bgms[type];
+        _bgmSource.clip = _bgmClips[type];
         _bgmSource.Play();
     }
 
-    public void PlaySFX(Define.SFX type, GameObject go= null)
+    public void PlaySoundEffect(Define.SoundEffect type)
     {
-        AudioSource source = null;
-
-        if (go == null)
-            source = _sfxSource;
-        else
-            source = go.GetOrAddComponent<AudioSource>();
-
-        source.clip = _sfxs[type];
-        source.Play();
+        for(int i = 0; i < _effectSources.Length; i++)
+        {
+            if (_effectSources[i].isPlaying == false)
+            {
+                _effectSources[i].PlayOneShot(_effectClips[type]);
+                return;
+            }
+        }
     }
+
+    public void SetVolumeToBgm(float volume)
+    {
+        _bgmSource.volume = volume;
+    }
+
+    public void SetVolumeToEffect(float volume)
+    {
+        for(int i = 0; i < _effectSources.Length; i++)
+        {
+            _effectSources[i].volume = volume;
+        }
+    }
+
 }

@@ -13,6 +13,7 @@ public class Managers : MonoBehaviour
     ResourceManager _resource = new ResourceManager();
     PoolManager _pool = new PoolManager();
     DataManager _data = new DataManager();
+    SoundManager _sound = new SoundManager();
 
     public static UIManager UI { get { return Instance._ui; } }
     public static GameManager Game { get { return Instance._game; } }
@@ -20,8 +21,9 @@ public class Managers : MonoBehaviour
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static PoolManager Pool { get { return Instance._pool; } }
     public static DataManager Data { get { return Instance._data; } }
-    
-    private void Start()
+    public static SoundManager Sound { get { return Instance._sound; } }
+
+    void Start()
     {
         Init();
     }
@@ -38,9 +40,9 @@ public class Managers : MonoBehaviour
             s_instance = Util.GetOrAddComponent<Managers>(go);
             DontDestroyOnLoad(go);
 
-            Game.Init();
             Data.Init();
             Pool.Init();
+            Sound.Init();
         }
     }
 }

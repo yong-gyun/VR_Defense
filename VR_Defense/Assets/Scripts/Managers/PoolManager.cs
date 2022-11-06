@@ -7,11 +7,11 @@ using UnityEngine.AI;
 public class PoolManager
 {
     #region //Pool
-    class Pool
+    public class Pool
     {
         public GameObject Original { get; private set; }
         public Transform Root { get; set; }
-        Stack<Poolable> _poolStack = new Stack<Poolable>();
+        public Stack<Poolable> _poolStack { get; private set; } = new Stack<Poolable>();
 
         public void Init(GameObject original, int count = 5)
         {
@@ -27,7 +27,10 @@ public class PoolManager
         {
             GameObject go = UnityEngine.Object.Instantiate(Original);
             go.name = Original.name;
-            return go.GetOrAddComponent<Poolable>();
+
+            Poolable poolable = go.GetOrAddComponent<Poolable>();
+            Managers.Pool.poolableList.Add(poolable);
+            return poolable;
         }
 
         public void Push(Poolable poolable)
@@ -80,6 +83,7 @@ public class PoolManager
     }
     #endregion
 
+    public List<Poolable> poolableList { get; private set; } = new List<Poolable>();
     Dictionary<string, Pool> _pool = new Dictionary<string, Pool>();
     Transform _root = null;
 
