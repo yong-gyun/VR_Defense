@@ -75,6 +75,7 @@ public class LaserPointer : OVRCursor
         if (cursorVisual) cursorVisual.SetActive(false);
         OVRManager.InputFocusAcquired += OnInputFocusAcquired;
         OVRManager.InputFocusLost += OnInputFocusLost;
+        _laserBeamBehavior = LaserBeamBehavior.OnWhenHitTarget;
     }
 
     public override void SetCursorStartDest(Vector3 start, Vector3 dest, Vector3 normal)

@@ -2,24 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-public class UI_Shop : UI_Base
+public class UI_Shop : UI_WorldSpace
 {
     enum Buttons
     {
         BuyDamageBoomButton,
         BuySlowBoomButton,
         BuyStunBoomButton,
-        ShotSpeedImage,
-        DamageUpdradeButton,
-        FireSpeedUpdradeButton,
+        UpgradeFireSpeedButton,
+        UpgradeDamageButton
     }
 
-    enum Images
+    enum Texts
     {
-        DamageButtonPanel,
-        StunButtonPanel,
-        SlowButtonPanel
+        DamageStatText,
+        FireSpeedStatText
     }
 
     int _damageBoomPrice = 25;
@@ -43,13 +42,22 @@ public class UI_Shop : UI_Base
         base.Init();
 
         Bind<Button>(typeof(Buttons));
-        Bind<Image>(typeof(Images));
+        Bind<TextMeshProUGUI>(typeof(Texts));
+
         bomb = FindObjectOfType<Bomb>();
+        GetButton((int)Buttons.BuyDamageBoomButton).onClick.AddListener(OnBuyDamageBoom);
+        GetButton((int)Buttons.BuySlowBoomButton).onClick.AddListener(OnBuySlowBoom);
+        GetButton((int)Buttons.BuyStunBoomButton).onClick.AddListener(OnBuyStunBoom);
+        GetButton((int)Buttons.UpgradeDamageButton).onClick.AddListener(UpgradeDamage);
+        GetButton((int)Buttons.UpgradeFireSpeedButton).onClick.AddListener(UpgradeFireSpeed);
+
+        GetText((int)Texts.DamageStatText).text = $"{Managers.Game.Player.damage}";
+        GetText((int)Texts.FireSpeedStatText).text = $"{Managers.Game.Player.fireSpeed}";
     }
 
     void OnBuyDamageBoom()
     {
-        if (Managers.Game.CurrentGold < _damageBoomPrice || isBuyDamageBomb == true)
+        if (Managers.Game.CurrentGold < _damageBoomPrice)
             return;
 
         Managers.Game.CurrentGold -= _damageBoomPrice; 
@@ -58,7 +66,7 @@ public class UI_Shop : UI_Base
 
     void OnBuySlowBoom()
     {
-        if (Managers.Game.CurrentGold < _slowBoomPrice || isBuySlowBomb)
+        if (Managers.Game.CurrentGold < _slowBoomPrice)
             return;
 
         Managers.Game.CurrentGold -= _slowBoomPrice;
@@ -67,7 +75,7 @@ public class UI_Shop : UI_Base
 
     void OnBuyStunBoom()
     {
-        if (Managers.Game.CurrentGold < _stunBoomPrice || isBuyStunBomb)
+        if (Managers.Game.CurrentGold < _stunBoomPrice)
             return;
 
         Managers.Game.CurrentGold -= _stunBoomPrice;
@@ -81,6 +89,7 @@ public class UI_Shop : UI_Base
 
         Managers.Game.CurrentGold -= _upgradeDamagePrice;
         Managers.Game.Player.damage += _upgradeDamage;
+        GetText((int)Texts.DamageStatText).text = $"{Managers.Game.Player.damage}"; 
     }
 
     void UpgradeFireSpeed()
@@ -90,35 +99,37 @@ public class UI_Shop : UI_Base
 
         Managers.Game.CurrentGold -= _upgradeFireSpeedPrice;
         Managers.Game.Player.fireSpeed -= _upgradeFireSpeed;
+        GetText((int)Texts.FireSpeedStatText).text = $"{Managers.Game.Player.fireSpeed}";
     }
 
     IEnumerator Cooltime(Define.BombType type)
     {
-        switch(type)
+        Button btn = null;
+
+        switch (type)
         {
             case Define.BombType.Damage:
-                GetImage((int)Images.DamageButtonPanel).gameObject.SetActive(true);
-                isBuyDamageBomb = true;
-                yield return new WaitForSeconds(_coolTime);
-                GetImage((int)Images.DamageButtonPanel).gameObject.SetActive(false);
-                isBuyDamageBomb = false;
+                btn = GetButton((int)Buttons.BuyDamageBoomButton);
                 break;
 
             case Define.BombType.Stun:
-                GetImage((int)Images.StunButtonPanel).gameObject.SetActive(true);
-                isBuyStunBomb = true;
-                yield return new WaitForSeconds(_coolTime);
-                GetImage((int)Images.StunButtonPanel).gameObject.SetActive(false);
-                isBuyStunBomb = false;
+                btn = GetButton((int)Buttons.BuyStunBoomButton);
                 break;
 
             case Define.BombType.Slow:
-                GetImage((int)Images.SlowButtonPanel).gameObject.SetActive(true);
-                isBuySlowBomb = true;
-                yield return new WaitForSeconds(_coolTime);
-                GetImage((int)Images.SlowButtonPanel).gameObject.SetActive(false);
-                isBuySlowBomb = false;
+                btn = GetButton((int)Buttons.BuySlowBoomButton);
                 break;
         }
+
+        Color color = btn.image.color;
+        color.a = 0.5f;
+        btn.image.color = color;
+        btn.enabled = false;
+
+        yield return new WaitForSeconds(_coolTime);
+        
+        color.a = 1f;
+        btn.image.color = color;
+        btn.enabled = true;
     }
 }

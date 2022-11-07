@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    Transform[] _explosionPoints = new Transform[4];
+    Transform[] _explosionPoints = new Transform[6];
     List<MobBase> mobs = new List<MobBase>();
 
     float _damage = 40;
     float _slowTime = 4;
     float _stunTime = 2;
     float _coolTime = 10;
-
-    //
 
     private void Start()
     {

@@ -10,6 +10,8 @@ public class GameScene : SceneBase
 
         Managers.Game.CurrentGold = 0;
         Managers.Game.CurrentScore = 0;
+        Managers.Game.Player.transform.position = new Vector3(1, 13, 2.5f);
+        Managers.Game.Player.transform.rotation = Quaternion.identity;
 
         //Managers.UI.ShowUIScene<UI_Countdown>();
     }

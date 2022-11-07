@@ -28,23 +28,23 @@ public class UIManager
 
     GameObject root = null;
 
-    public void SetCanvas(GameObject go, bool isFixed = false)
+    public void SetCanvas(GameObject go, bool sort = false)
     {
         if (go == null)
             return;
         
         Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
         canvas.overrideSorting = true;
-        
-        if(isFixed)
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+
+        if (sort)
         {
-            canvas.renderMode = RenderMode.ScreenSpaceCamera;
             canvas.sortingOrder = _order;
             _order++;
         }
         else
         {
-            canvas.renderMode = RenderMode.WorldSpace;
+            canvas.sortingOrder = 0;
         }
 
         canvas.worldCamera = Camera.main;

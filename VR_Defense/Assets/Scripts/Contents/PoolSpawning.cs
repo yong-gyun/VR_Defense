@@ -6,9 +6,10 @@ public class PoolSpawning : MonoBehaviour
 {
     Transform[] spawnPoint = new Transform[6];
 
-    GameObject _wolfOriginal;
-    GameObject _infernoOriginal;
-    GameObject _crabOriginal;
+    GameObject _wolf;
+    GameObject _inferno;
+    GameObject _crab;
+    public static int mobCount = 0;
 
     private void Start()
     {
@@ -22,18 +23,42 @@ public class PoolSpawning : MonoBehaviour
             spawnPoint[i] = transform.Find($"SpawnPoint_{i + 1}");
         }
 
-        _wolfOriginal = Managers.Resource.Load<GameObject>("Prefabs/Character/Wolf");
-        _infernoOriginal = Managers.Resource.Load<GameObject>("Prefabs/Character/Inferno");
-        _crabOriginal = Managers.Resource.Load<GameObject>("Prefabs/Character/Crab");
+        _wolf = Managers.Resource.Load<GameObject>("Prefabs/Character/Wolf");
+        _inferno = Managers.Resource.Load<GameObject>("Prefabs/Character/Inferno");
+        _crab = Managers.Resource.Load<GameObject>("Prefabs/Character/Crab");
 
-        FirstWave();
+        StartCoroutine(FirstWave());
     }
 
-    public void FirstWave()
+    IEnumerator FirstWave()
     {
-        Managers.Pool.Pop(_wolfOriginal, spawnPoint[0].position);
-        Managers.Pool.Pop(_infernoOriginal, spawnPoint[1].position);
-        Managers.Pool.Pop(_crabOriginal, spawnPoint[2].position);
+        Managers.Pool.Pop(_wolf, spawnPoint[0].position).GetComponent<MobBase>();
+        Managers.Pool.Pop(_wolf, spawnPoint[1].position);
+        Managers.Pool.Pop(_wolf, spawnPoint[2].position);
+        yield return new WaitForSeconds(5f);
+        
+        Managers.Pool.Pop(_wolf, spawnPoint[3].position);
+        Managers.Pool.Pop(_wolf, spawnPoint[4].position);
+        Managers.Pool.Pop(_wolf, spawnPoint[5].position);
+        yield return new WaitForSeconds(5f);
+
+        Managers.Pool.Pop(_wolf, spawnPoint[0].position);
+        Managers.Pool.Pop(_wolf, spawnPoint[1].position);
+        Managers.Pool.Pop(_wolf, spawnPoint[2].position);
+        yield return new WaitForSeconds(5f);
+
+        Managers.Pool.Pop(_inferno, spawnPoint[0].position);
+        Managers.Pool.Pop(_inferno, spawnPoint[1].position);
+        Managers.Pool.Pop(_inferno, spawnPoint[2].position);
+        yield return new WaitForSeconds(5f);
+
+        Managers.Pool.Pop(_wolf, spawnPoint[0].position);
+        Managers.Pool.Pop(_wolf, spawnPoint[0].position);
+        Managers.Pool.Pop(_wolf, spawnPoint[0].position);
+        yield return new WaitForSeconds(5f);
+
+        while (mobCount > 0)
+            yield return null;
     }
 
     public void SecondWave()

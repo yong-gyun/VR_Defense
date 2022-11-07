@@ -9,7 +9,8 @@ public class InfernoController : MobBase
     protected override void Start()
     {
         base.Start();
-        Init(40, 12, 7, 25, Define.MobType.InfernoDragon);
+        Init(40, 12, 3, 25);
+        _type = Define.MobType.InfernoDragon;
         _firePos = transform.Find("FirePos");
     }
 

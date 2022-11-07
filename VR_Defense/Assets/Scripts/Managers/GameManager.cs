@@ -42,6 +42,8 @@ public class GameManager
             return _player;
         }
     }
+    public Define.EndGame OverType = Define.EndGame.Unknow;
+    public List<MobBase> mobs { get; set; } = new List<MobBase>(); 
 
     public int CurrentScore { get; set; } = 0;
     public int CurrentGold { get; set; } = 0;
@@ -55,4 +57,13 @@ public class GameManager
     }
 
     public PlayerController GetPlayer() { return _player; }
+
+    public void Over()
+    {
+        Player.transform.position = new Vector3(-1.25f, 20, -4);
+        Player.transform.rotation = Quaternion.Euler(Vector3.right * 15);
+        CurrentScore += CurrentGold + (int) Tower.HP;
+        Managers.Resource.Destroy(Player.gun);
+        Managers.Pool.Clear();
+    }
 }

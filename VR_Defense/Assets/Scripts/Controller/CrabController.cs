@@ -4,23 +4,17 @@ using UnityEngine;
 
 public class CrabController : MobBase
 {
-    private int shildCount = 3;
-
     protected override void Start()
     {
         base.Start();
 
-        Init(50, 8, 3, 5, Define.MobType.Crab);
+        Init(50, 5, 3, 5);
+        _type = Define.MobType.Crab;
     }
 
     public override void OnDamaged(float damage)
     {
-        if(shildCount > 0)
-        {
-            shildCount--;
-            return;
-        }
-
+        damage *= (7 / 10);
         base.OnDamaged(damage);
-    }
+    } 
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Transform _firePos;
-
     public float damage { get; set; } = 8;
     public float fireSpeed { get; set; } = 0.8f;
+    public GameObject gun { get; set; }
     private bool isFire = false;
 
     private void Start()
@@ -23,11 +23,10 @@ public class PlayerController : MonoBehaviour
     
     public void Init()
     {
-        GameObject gun = Managers.Resource.Instantiate("Item/Gun", ARAVRInput.RHandPosition, Quaternion.identity, ARAVRInput.RHand);
+        gun = Managers.Resource.Instantiate("Item/Gun", ARAVRInput.RHandPosition, Quaternion.identity, ARAVRInput.RHand);
         gun.transform.localPosition = new Vector3(0.3f, -0.5f, 0.5f);
         Managers.UI.MakeWorldSpaceUI<UI_Crosshair>(Managers.UI.Root.transform);
         _firePos = Util.FindChild(gun, "FirePos", true).transform;
-
     }
 
 

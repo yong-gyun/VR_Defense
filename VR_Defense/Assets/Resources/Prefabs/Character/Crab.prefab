@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 162404556033178675}
   - component: {fileID: 162404556033178686}
   - component: {fileID: 162404556033178685}
+  - component: {fileID: 5817075979682286797}
   m_Layer: 0
   m_Name: Crab
   m_TagString: Mob
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 162404556033178673}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 162404555307447833}
@@ -97,6 +98,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84c28d9eab0283d498b711e3297bafdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!195 &5817075979682286797
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162404556033178673}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &162404555307838617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -111,6 +134,18 @@ PrefabInstance:
     - target: {fileID: 400000, guid: a7ded61e45b07fe44be58a121928a9d4, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a7ded61e45b07fe44be58a121928a9d4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a7ded61e45b07fe44be58a121928a9d4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a7ded61e45b07fe44be58a121928a9d4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a7ded61e45b07fe44be58a121928a9d4, type: 3}
       propertyPath: m_LocalPosition.x

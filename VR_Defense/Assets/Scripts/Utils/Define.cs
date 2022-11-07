@@ -65,4 +65,11 @@ public class Define
     {
 
     }
+
+    public enum EndGame
+    {
+        Unknow,
+        Clear,
+        Over
+    }
 }

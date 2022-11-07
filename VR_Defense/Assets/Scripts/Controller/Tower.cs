@@ -5,9 +5,9 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     public float HP { get { return _hp; } }
-    float _hp = 100;
+    float _hp = 2000;
     bool isHit;
-    GameObject[] blastLocations = new GameObject[3];
+    GameObject[] blastLocations = new GameObject[6];
 
     private void Start()
     {
@@ -52,5 +52,7 @@ public class Tower : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
+
+        Managers.UI.ShowUIScene<UI_Over>();
     }
 }

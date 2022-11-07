@@ -8,6 +8,9 @@ public class WolfController : MobBase
     {
         base.Start();
 
-        Init(50, 10, 8, 10, Define.MobType.Wolf);
+        Init(50, 10, 5, 12);
+        _type = Define.MobType.Wolf;
+        _myGold = 2;
+        _myScore = 15;
     }
 }

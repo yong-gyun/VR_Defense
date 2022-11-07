@@ -126,7 +126,7 @@ public class PoolManager
     {
         if (_pool.ContainsKey(original.name) == false)
             return null;
-
+        PoolSpawning.mobCount++;
         Poolable pool = _pool[original.name].Pop(position, parent);
         return pool;
     }

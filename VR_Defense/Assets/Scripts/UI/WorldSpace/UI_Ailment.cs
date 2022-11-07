@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Ailment : UI_Base
+public class UI_Ailment : UI_WorldSpace
 {
     Sprite _stunImage;
     Sprite _slowImage;

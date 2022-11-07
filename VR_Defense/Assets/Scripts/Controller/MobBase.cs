@@ -20,7 +20,10 @@ public class MobBase : MonoBehaviour
     protected float _hp;
     protected float _attackRange;
     protected float _speed;
-    
+    protected int _myScore;
+    protected int _myGold;
+    static int _avoidance = 30;
+
     public Transform Target
     {
         get
@@ -68,6 +71,10 @@ public class MobBase : MonoBehaviour
     {
         _animator = Util.GetOrAddComponent<Animator>(gameObject);
         _agent = Util.GetOrAddComponent<NavMeshAgent>(gameObject);
+        _agent.avoidancePriority = _avoidance++;
+        _agent.radius = 0.25f;
+        Managers.Game.mobs.Add(this);
+        
     }
 
     protected virtual void Update()
@@ -83,7 +90,7 @@ public class MobBase : MonoBehaviour
         }
     }
 
-    public virtual void Init(float hp, float damage, float speed, float attackRange, Define.MobType type)
+    public virtual void Init(float hp, float damage, float speed, float attackRange)
     {
         _maxHP = hp;
         _hp = _maxHP;
@@ -91,7 +98,6 @@ public class MobBase : MonoBehaviour
         _attackRange = attackRange;
         _speed = speed;
         _state = Define.State.Move;
-        _type = type;
         _agent.speed = _speed;
     }
 
@@ -131,9 +137,14 @@ public class MobBase : MonoBehaviour
         State = Define.State.Hit;
         //@Todo make knock back
 
+        _agent.SetDestination(transform.position);
+
         if (_hp <= 0)
         {
             State = Define.State.Die;
+
+            Managers.Game.CurrentGold += _myGold;
+            Managers.Game.CurrentScore += _myScore;
         }
     }
 
@@ -161,5 +172,7 @@ public class MobBase : MonoBehaviour
     public virtual void OnDie()
     {
         Debug.Log("Die");
+        PoolSpawning.mobCount++;
+        Managers.Pool.Push(GetComponent<Poolable>());
     }
 }
