@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    public float MaxHP { get { return _maxHP; } }
     public float HP { get { return _hp; } }
-    float _hp = 2000;
+    float _hp = 0;
+    float _maxHP = 2000;
     bool isHit;
     GameObject[] blastLocations = new GameObject[6];
 
@@ -15,6 +17,8 @@ public class Tower : MonoBehaviour
         {
             blastLocations[i] = Util.FindChild(gameObject, $"BlastLocation_{i + 1}", true);
         }
+
+        _hp = _maxHP;
     }
 
     public void OnDamaged(float damage)
@@ -28,6 +32,14 @@ public class Tower : MonoBehaviour
         {
             StartCoroutine(OnDie());
         }
+    }
+
+    public void Heal(float value = 100)
+    {
+        _hp += value;
+
+        if (_hp > _maxHP)
+            _hp = _maxHP;
     }
 
     IEnumerator OnDie()

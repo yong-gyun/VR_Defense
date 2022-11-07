@@ -28,8 +28,8 @@ public class UI_Interface : UI_WorldSpace
     private void Update()
     {
         GetText((int)Texts.ScoreText).text = $": {Managers.Game.CurrentScore}";
-        GetText((int)Texts.GoldText).text = $": {Managers.Game.CurrentGold}";
-        GetText((int)Texts.TowerHpText).text = $"{Managers.Game.Tower.HP} / 2000";
-        Get<Slider>((int)Sliders.TowerHpSlider).value = Managers.Game.Tower.HP / 2000;
+        GetText((int)Texts.GoldText).text = $"{Managers.Game.CurrentGold}";
+        GetText((int)Texts.TowerHpText).text = $"{Managers.Game.Tower.HP} / {Managers.Game.Tower.MaxHP}";
+        Get<Slider>((int)Sliders.TowerHpSlider).value = Managers.Game.Tower.HP / Managers.Game.Tower.MaxHP;
     }
 }

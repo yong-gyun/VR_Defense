@@ -5,6 +5,7 @@ using UnityEngine;
 public class UIManager
 {
     Stack<UI_Popup> _stackPopup = new Stack<UI_Popup>();
+    List<UI_WorldSpace> _listWorldSpace = new List<UI_WorldSpace>();
     UI_Scene _sceneUI = null;
     int _order = 10;
 
@@ -50,7 +51,7 @@ public class UIManager
         canvas.worldCamera = Camera.main;
     }
 
-    public T MakeWorldSpaceUI<T>(Transform parent, string name = null) where T : UI_Base
+    public T MakeWorldSpaceUI<T>(Transform parent, string name = null) where T : UI_WorldSpace
     {
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
@@ -60,6 +61,20 @@ public class UIManager
         Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
         canvas.renderMode = RenderMode.WorldSpace;
         return go.GetOrAddComponent<T>();
+    }
+
+    public T ShowWorldSpaceUI<T>(string name = null) where T : UI_WorldSpace
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
+
+        GameObject go = GameObject.Find(name);
+
+        if (go == null)
+            return null;
+
+        go.gameObject.SetActive(true);
+        return go.GetComponent<T>();
     }
 
     public T ShowUIPopup<T>(string name = null) where T : UI_Popup
@@ -85,9 +100,19 @@ public class UIManager
         return sceneUI;
     }
 
-    public void CloseWorldSpaceUI(UI_Base worldUI)
+    public void CloseWorldSpaceUI<T>(string name = null) where T : UI_WorldSpace
     {
-        Managers.Resource.Destroy(worldUI.gameObject);
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
+
+        foreach(UI_WorldSpace world in _listWorldSpace)
+        {
+            if(world.name == name)
+            {
+                world.gameObject.SetActive(false);
+                break;
+            }
+        }
     }
 
     public void ClosePopupUI()

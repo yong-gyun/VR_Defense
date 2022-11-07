@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class CrabController : MobBase
 {
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
-
-        Init(50, 5, 3, 5);
+        base.Awake();
         _type = Define.MobType.Crab;
+        _myGold = 6;
+        _myScore = 20;
     }
 
     public override void OnDamaged(float damage)
     {
-        damage *= (7 / 10);
+        damage = (7f / 10f) * damage;
         base.OnDamaged(damage);
     } 
 }

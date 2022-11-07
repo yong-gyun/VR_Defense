@@ -6,12 +6,13 @@ public class InfernoController : MobBase
 {
    private Transform _firePos;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
-        Init(40, 12, 3, 25);
+        base.Awake();
         _type = Define.MobType.InfernoDragon;
         _firePos = transform.Find("FirePos");
+        _myGold = 10;
+        _myScore = 50;
     }
 
     public override void OnAttack()

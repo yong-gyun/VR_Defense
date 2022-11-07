@@ -22,6 +22,8 @@ public class UI_Over : UI_Scene
         ScoreText
     }
 
+    private TouchScreenKeyboard overlayKeyboard;
+
     public override void Init()
     {
         base.Init();
@@ -36,7 +38,15 @@ public class UI_Over : UI_Scene
         {
             Get<InputField>((int) InputFields.UserNameField).gameObject.SetActive(true);
             GetButton((int)Buttons.ConfirmButton).gameObject.SetActive(true);
+
+            overlayKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
         }
+    }
+
+    private void Update()
+    {
+        if (overlayKeyboard != null)
+            Get<InputField>((int)InputFields.UserNameField).text = overlayKeyboard.text;
     }
 
     void InputCheck()
@@ -44,7 +54,6 @@ public class UI_Over : UI_Scene
         InputField inputField = Get<InputField>((int)InputFields.UserNameField);
         if (string.IsNullOrEmpty(inputField.text))
             return;
-
 
     }
 }

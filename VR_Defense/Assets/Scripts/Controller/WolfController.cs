@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class WolfController : MobBase
 {
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
 
-        Init(50, 10, 5, 12);
         _type = Define.MobType.Wolf;
-        _myGold = 2;
-        _myScore = 15;
+        _myGold = 4;
+        _myScore = 25;
     }
 }

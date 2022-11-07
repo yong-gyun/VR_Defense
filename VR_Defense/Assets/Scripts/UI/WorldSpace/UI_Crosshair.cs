@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Crosshair : UI_Base
+public class UI_Crosshair : UI_WorldSpace
 {
     enum Images
     {

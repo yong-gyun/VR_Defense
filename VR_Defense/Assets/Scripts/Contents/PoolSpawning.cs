@@ -10,6 +10,14 @@ public class PoolSpawning : MonoBehaviour
     GameObject _inferno;
     GameObject _crab;
     public static int mobCount = 0;
+    int _currentWave = 0;
+    enum Wave
+    {
+        First,
+        Second,
+        Third,
+        Boss,
+    }
 
     private void Start()
     {
@@ -30,54 +38,143 @@ public class PoolSpawning : MonoBehaviour
         StartCoroutine(FirstWave());
     }
 
+    MobBase GetMob(Define.MobType type, int idx = 0)
+    {
+        MobBase mob = null;
+
+        switch (type)
+        {
+            case Define.MobType.Wolf:
+                 mob = Managers.Pool.Pop(_wolf, spawnPoint[idx].position).GetComponent<MobBase>();
+                break;
+            case Define.MobType.InfernoDragon:
+                mob = Managers.Pool.Pop(_inferno, spawnPoint[idx].position).GetComponent<MobBase>();
+                break;
+            case Define.MobType.Crab:
+                mob = Managers.Pool.Pop(_crab, spawnPoint[idx].position).GetComponent<MobBase>();
+                break;
+        }
+
+        mobCount++;
+        mob.Init(_currentWave);
+        mob._hpBar.OnUpdateUI(mob.MaxHP);
+        return mob;
+    }
+
     IEnumerator FirstWave()
     {
-        Managers.Pool.Pop(_wolf, spawnPoint[0].position).GetComponent<MobBase>();
-        Managers.Pool.Pop(_wolf, spawnPoint[1].position);
-        Managers.Pool.Pop(_wolf, spawnPoint[2].position);
-        yield return new WaitForSeconds(5f);
+        Managers.UI.ShowWorldSpaceUI<UI_Wave>().Init("Wave 1");
+        yield return new WaitForSeconds(3f);
+
+        float delay = 5;
+        WaitForSeconds wait = new WaitForSeconds(delay);
         
-        Managers.Pool.Pop(_wolf, spawnPoint[3].position);
-        Managers.Pool.Pop(_wolf, spawnPoint[4].position);
-        Managers.Pool.Pop(_wolf, spawnPoint[5].position);
-        yield return new WaitForSeconds(5f);
+        GetMob(Define.MobType.Crab, 4);
+        GetMob(Define.MobType.Crab, 3);
+        GetMob(Define.MobType.Crab, 0);
+        yield return wait;
 
-        Managers.Pool.Pop(_wolf, spawnPoint[0].position);
-        Managers.Pool.Pop(_wolf, spawnPoint[1].position);
-        Managers.Pool.Pop(_wolf, spawnPoint[2].position);
-        yield return new WaitForSeconds(5f);
+        GetMob(Define.MobType.Crab, 1);
+        GetMob(Define.MobType.Crab, 2);
+        GetMob(Define.MobType.Crab, 3);
+        yield return wait;
 
-        Managers.Pool.Pop(_inferno, spawnPoint[0].position);
-        Managers.Pool.Pop(_inferno, spawnPoint[1].position);
-        Managers.Pool.Pop(_inferno, spawnPoint[2].position);
-        yield return new WaitForSeconds(5f);
+        GetMob(Define.MobType.Crab, 1);
+        GetMob(Define.MobType.Crab, 2);
+        GetMob(Define.MobType.Crab, 3);
+        GetMob(Define.MobType.Crab, 4);
+        GetMob(Define.MobType.Crab, 5);
+        yield return wait;
 
-        Managers.Pool.Pop(_wolf, spawnPoint[0].position);
-        Managers.Pool.Pop(_wolf, spawnPoint[0].position);
-        Managers.Pool.Pop(_wolf, spawnPoint[0].position);
-        yield return new WaitForSeconds(5f);
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Wolf, 3);
+        yield return wait;
+
+        GetMob(Define.MobType.Crab, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Wolf, 3);
+        GetMob(Define.MobType.Crab, 4);
+        yield return wait;
+
+
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Crab, 5);
+        GetMob(Define.MobType.Crab, 6);
+        yield return wait;
+        
+        GetMob(Define.MobType.Crab, 1);
+        GetMob(Define.MobType.Crab, 2);
+        GetMob(Define.MobType.Crab, 3);
+        GetMob(Define.MobType.Crab, 4);
+        GetMob(Define.MobType.Crab, 5);
+        yield return wait;
 
         while (mobCount > 0)
             yield return null;
+
+        Managers.Game.Tower.Heal(Managers.Game.Tower.MaxHP / 2);
     }
 
-    public void SecondWave()
+    IEnumerator SecondWave()
     {
+        _currentWave++;
+        Managers.UI.ShowWorldSpaceUI<UI_Wave>().Init("Wave 2");
+        yield return new WaitForSeconds(3f);
 
+        float delay = 5;
+        WaitForSeconds wait = new WaitForSeconds(delay);
+
+        GetMob(Define.MobType.Crab, 4);
+        GetMob(Define.MobType.Crab, 3);
+        GetMob(Define.MobType.Crab, 0);
+        yield return wait;          
+                                    
+        GetMob(Define.MobType.Crab, 1);
+        GetMob(Define.MobType.Crab, 2);
+        GetMob(Define.MobType.Crab, 3);
+        yield return wait;          
+                                    
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Wolf, 3); 
+        GetMob(Define.MobType.Crab, 4);
+        GetMob(Define.MobType.Crab, 5);
+        yield return wait;          
+                                    
+        GetMob(Define.MobType.Crab, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Wolf, 3);
+        GetMob(Define.MobType.Crab, 4);
+        GetMob(Define.MobType.Wolf, 5);
+        GetMob(Define.MobType.Crab, 6);
+        yield return wait;          
+                                    
+                                    
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Crab, 5);
+        GetMob(Define.MobType.Crab, 6);
+        yield return wait;          
+                                    
+        GetMob(Define.MobType.Crab, 1);
+        GetMob(Define.MobType.Crab, 2);
+        GetMob(Define.MobType.Crab, 3);
+        GetMob(Define.MobType.Crab, 4);
+        GetMob(Define.MobType.Crab, 5);
+        yield return wait;
     }
 
-    public void ThirdWave()
+    /*
+    IEnumerator ThirdWave()
     {
-
+        Managers.UI.ShowWorldSpaceUI<UI_Wave>().Init("Wave 3");
     }
 
-    public void FourthWave()
+    IEnumerator LastWave()
     {
-
+        Managers.UI.ShowWorldSpaceUI<UI_Wave>().Init("Last Wave");
     }
-
-    public void BossWave()
-    {
-
-    }
+    */
 }

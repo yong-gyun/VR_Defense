@@ -3,23 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ILoader<T>
+public interface ILoader<TKey, TValue>
 {
-    List<T> MakeList();
+    Dictionary<TKey, TValue> MakeDic();
 }
 
 public class MobStat
 {
     public float hp;
     public float damage;
+    public float speed;
+    public float attackRange;
 }
 
-public class MosStatData : ILoader<MobStat>
+public class MosStatData : ILoader<Define.MobType, MobStat>
 {
-    public List<MobStat> MobStat = new List<MobStat>();
+    public List<MobStat> stat = new List<MobStat>();
 
-    public List<MobStat> MakeList()
+    public Dictionary<Define.MobType, MobStat> MakeDic()
     {
-        return MobStat;
+        Dictionary<Define.MobType, MobStat> myDic = new Dictionary<Define.MobType, MobStat>();
+
+        foreach(MobStat stat in stat)
+        {
+            myDic.Add(stat.type, stat);
+        }
+
+        return myDic;
     }
 }

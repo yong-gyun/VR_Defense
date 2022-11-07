@@ -17,16 +17,16 @@ public class UI_Title : UI_WorldSpace
         base.Init();
         Bind<Button>(typeof(Buttons));
 
-        GetButton((int)Buttons.StartButton).gameObject.AddUIEvent(OnClickStartButton, Define.UIEvent.Click);
-        GetButton((int)Buttons.OptionButton).gameObject.AddUIEvent(OnClickSettingButton, Define.UIEvent.Click);
+        GetButton((int)Buttons.StartButton).onClick.AddListener(OnClickStartButton);
+        GetButton((int)Buttons.OptionButton).onClick.AddListener(OnClickSettingButton);
     }
 
-    void OnClickStartButton(PointerEventData evtData)
+    void OnClickStartButton()
     {
         Managers.Scene.Load(Define.Scene.Game);
     }
 
-    void OnClickSettingButton(PointerEventData evtData)
+    void OnClickSettingButton()
     {
         //Managers.UI.ShowUIPopup<>();
     }

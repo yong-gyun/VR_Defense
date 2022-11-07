@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
         gun.transform.localPosition = new Vector3(0.3f, -0.5f, 0.5f);
         Managers.UI.MakeWorldSpaceUI<UI_Crosshair>(Managers.UI.Root.transform);
         _firePos = Util.FindChild(gun, "FirePos", true).transform;
+        damage = 8;
     }
 
 

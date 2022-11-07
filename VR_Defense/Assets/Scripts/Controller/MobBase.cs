@@ -8,21 +8,25 @@ public class MobBase : MonoBehaviour
     public Define.MobType Type { get { return _type; } }
     public float MaxHP { get { return _maxHP; } }
     public float MoveSpeed { get { return _speed; } }
-
+    public float AttackRange { get { return _attackRange; } }
     public NavMeshAgent _agent { get; set; }
+    public UI_HpBar _hpBar { get; set; }
+    
     protected Animator _animator;
     protected Transform _target;
-    protected GameObject _hpHar;
-    protected Define.State _state;
+    protected MobStat[] _stat;
+    [SerializeField] protected Define.State _state;
     protected Define.MobType _type;
-    protected float _damage;
     protected float _maxHP;
     protected float _hp;
-    protected float _attackRange;
+    protected float _damage;
     protected float _speed;
+    protected float _attackRange;
+
     protected int _myScore;
     protected int _myGold;
     static int _avoidance = 30;
+
 
     public Transform Target
     {
@@ -48,33 +52,32 @@ public class MobBase : MonoBehaviour
             switch (_state)
             {
                 case Define.State.Move:
-                    Debug.Log("Move");
                     _animator.CrossFade("Move", 0.1f);
                     break;
                 case Define.State.Attack:
-                    Debug.Log("Attack");
                     _animator.CrossFade("Attack", 0.1f, -1, 0);
                     break;
                 case Define.State.Hit:
-                    Debug.Log("Hit");
                     _animator.CrossFade("Hit", 0.1f);
                     break;
+                case Define.State.Stun:
+                    _animator.CrossFade("Stun", 0.1f);
+                    break;
                 case Define.State.Die:
-                    Debug.Log("Die");
                     _animator.CrossFade("Die", 0.1f);
                     break;
             }
         }
     }
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         _animator = Util.GetOrAddComponent<Animator>(gameObject);
         _agent = Util.GetOrAddComponent<NavMeshAgent>(gameObject);
         _agent.avoidancePriority = _avoidance++;
         _agent.radius = 0.25f;
         Managers.Game.mobs.Add(this);
-        
+        _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBar>(transform);
     }
 
     protected virtual void Update()
@@ -90,21 +93,17 @@ public class MobBase : MonoBehaviour
         }
     }
 
-    public virtual void Init(float hp, float damage, float speed, float attackRange)
+    public virtual void Init(int level)
     {
-        _maxHP = hp;
-        _hp = _maxHP;
-        _damage = damage;
-        _attackRange = attackRange;
-        _speed = speed;
+        
+        _hp = MaxHP;
         _state = Define.State.Move;
         _agent.speed = _speed;
+        
     }
 
     protected virtual void UpdateMove()
     {
-        Debug.Log("Update Move");
-
         Vector3 dir = Target.position - transform.position;
         Quaternion qua = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Slerp(transform.rotation, qua, 20 * Time.deltaTime);
@@ -133,10 +132,14 @@ public class MobBase : MonoBehaviour
 
     public virtual void OnDamaged(float damage)
     {
+        if (_state == Define.State.Die)
+            return;
+
         _hp -= damage;
         State = Define.State.Hit;
-        //@Todo make knock back
+        _hpBar.OnUpdateUI(_hp / _maxHP);
 
+        //@Todo make knock back
         _agent.SetDestination(transform.position);
 
         if (_hp <= 0)
@@ -150,17 +153,10 @@ public class MobBase : MonoBehaviour
 
     public virtual void OnHit()
     {
-        if (_state == Define.State.Die)
-            return;
-
         if ((Target.position - transform.position).magnitude > _attackRange)
-        {
             State = Define.State.Move;
-        }
         else
-        {
             State = Define.State.Attack;
-        }
     }
 
     public virtual void OnAttack() 
@@ -169,10 +165,17 @@ public class MobBase : MonoBehaviour
         Managers.Game.Tower.OnDamaged(_damage); 
     }
 
+    public virtual void OnStun(float stunTime = 2)
+    {
+        State = Define.State.Stun; 
+        GameObject go = Managers.Resource.Instantiate("Effect/StunParticle");
+        _agent.SetDestination(transform.position);
+    }
+
     public virtual void OnDie()
     {
-        Debug.Log("Die");
-        PoolSpawning.mobCount++;
+        Debug.Log($"Die {name}");
+        PoolSpawning.mobCount--;
         Managers.Pool.Push(GetComponent<Poolable>());
     }
 }

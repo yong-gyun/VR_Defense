@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class UI_WorldSpace : UI_Base
 {
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         Init();
     }
 
-    public override void Init()
+    protected virtual void Start()
     {
         gameObject.AddComponent<OVRRaycaster>().pointer = Managers.Input.LaserPointer.gameObject;
         Canvas canvas = Util.GetOrAddComponent<Canvas>(gameObject);
         canvas.renderMode = RenderMode.WorldSpace;
         canvas.worldCamera = Camera.main;
+    }
+
+    
+
+    public override void Init()
+    {
+
     }
 }

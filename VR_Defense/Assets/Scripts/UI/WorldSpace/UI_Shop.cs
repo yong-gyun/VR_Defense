@@ -41,10 +41,11 @@ public class UI_Shop : UI_WorldSpace
     {
         base.Init();
 
+        bomb = FindObjectOfType<Bomb>();
+
         Bind<Button>(typeof(Buttons));
         Bind<TextMeshProUGUI>(typeof(Texts));
 
-        bomb = FindObjectOfType<Bomb>();
         GetButton((int)Buttons.BuyDamageBoomButton).onClick.AddListener(OnBuyDamageBoom);
         GetButton((int)Buttons.BuySlowBoomButton).onClick.AddListener(OnBuySlowBoom);
         GetButton((int)Buttons.BuyStunBoomButton).onClick.AddListener(OnBuyStunBoom);
@@ -128,8 +129,8 @@ public class UI_Shop : UI_WorldSpace
 
         yield return new WaitForSeconds(_coolTime);
         
+        btn.enabled = true;
         color.a = 1f;
         btn.image.color = color;
-        btn.enabled = true;
     }
 }

@@ -35,15 +35,15 @@ public class Bomb : MonoBehaviour
         {
             case Define.BombType.Damage:
                 OnDamageBomb();
-                ExplosionEffect(Define.BombType.Damage);
+                StartCoroutine(ExplosionEffect(Define.BombType.Damage));
                 break;
             case Define.BombType.Slow:
                 StartCoroutine(OnSlowBomb());
-                ExplosionEffect(Define.BombType.Slow);
+                StartCoroutine(ExplosionEffect(Define.BombType.Slow));
                 break;
             case Define.BombType.Stun:
                 StartCoroutine(OnStunBomb());
-                ExplosionEffect(Define.BombType.Stun);
+                StartCoroutine(ExplosionEffect(Define.BombType.Stun));
                 break;
         }
     }
@@ -58,13 +58,10 @@ public class Bomb : MonoBehaviour
     {
         foreach (MobBase mob in mobs)
         {
-            UI_Ailment ailment = Managers.UI.MakeWorldSpaceUI<UI_Ailment>(mob.transform);
-            ailment.SetAilment(Define.Ailment.Slow);
             float tmpSpeed = mob.MoveSpeed;
             mob._agent.speed = tmpSpeed / 2;
             yield return new WaitForSeconds(_slowTime);
             mob._agent.speed = tmpSpeed;
-            Managers.Resource.Destroy(ailment.gameObject);
         }
     }
 
@@ -72,17 +69,16 @@ public class Bomb : MonoBehaviour
     {
         foreach (MobBase mob in mobs)
         {
-            UI_Ailment ailment = Managers.UI.MakeWorldSpaceUI<UI_Ailment>(mob.transform);
-            ailment.SetAilment(Define.Ailment.Stun);
-            mob.State = Define.State.Stun;
+            mob.OnStun(_stunTime);
             yield return new WaitForSeconds(_stunTime);
             mob.State = Define.State.Move;
-            Managers.Resource.Destroy(ailment.gameObject);
         }
     }
 
     IEnumerator ExplosionEffect(Define.BombType type)
     {
+        Debug.Log($"Effect {type}Explosion");
+
         for(int i = 0; i < _explosionPoints.Length; i++)
         {
             GameObject go = Managers.Resource.Instantiate($"Effect/{type}Explosion", _explosionPoints[i].position, Quaternion.identity);
