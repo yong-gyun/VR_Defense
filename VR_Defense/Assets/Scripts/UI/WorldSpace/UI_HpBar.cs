@@ -18,7 +18,6 @@ public class UI_HpBar : UI_WorldSpace
 
     public void OnUpdateUI(float hp)
     {
-        Debug.Log(Get<Slider>((int)Sliders.HpSlider));
         Get<Slider>((int)Sliders.HpSlider).value = hp;
     }
 }

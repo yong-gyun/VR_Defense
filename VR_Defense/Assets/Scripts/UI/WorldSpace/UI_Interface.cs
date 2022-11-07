@@ -20,7 +20,8 @@ public class UI_Interface : UI_WorldSpace
 
     public override void Init()
     {
-        base.Init();
+        base.Init(); 
+        Managers.UI.worldSpaces.Add(this);
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<Slider>(typeof(Sliders));
     }

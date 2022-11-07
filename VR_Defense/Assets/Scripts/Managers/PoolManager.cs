@@ -138,11 +138,26 @@ public class PoolManager
         return _pool[name].Original;
     }
 
+    public void CollectPool()
+    {
+        foreach(Poolable poolable in poolableList)
+        {
+            if(poolable.IsUsing)
+            {
+                poolable.IsUsing = false;
+                Push(poolable);
+            }
+        }
+
+        poolableList.Clear();
+    }
+
     public void Clear()
     {
         foreach (Transform child in _root)
             GameObject.Destroy(child);
 
         _pool.Clear();
+        poolableList.Clear();
     }
 }

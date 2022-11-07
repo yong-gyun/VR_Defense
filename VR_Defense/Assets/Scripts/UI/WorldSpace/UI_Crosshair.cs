@@ -9,6 +9,12 @@ public class UI_Crosshair : UI_WorldSpace
     {
         Crosshair
     }
+    ARAVRInput.Controller _controller;
+
+    public void SetDirection(ARAVRInput.Controller controller)
+    {
+        _controller = controller;
+    }
 
     public override void Init()
     {
@@ -17,6 +23,6 @@ public class UI_Crosshair : UI_WorldSpace
 
     private void Update()
     {
-        ARAVRInput.DrawCrosshair(gameObject.transform);
+        ARAVRInput.DrawCrosshair(gameObject.transform, true, _controller);
     }
 }

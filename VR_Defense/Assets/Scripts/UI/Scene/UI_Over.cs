@@ -4,17 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UI_Over : UI_Scene
+public class UI_Over : UI_WorldSpace
 {
-    enum InputFields
-    {
-        UserNameField,
-    }
-
     enum Buttons
     {
-        TitleButton,
-        ConfirmButton
+        ExitButton,
+        RetryButton
     }
 
     enum Texts
@@ -22,38 +17,26 @@ public class UI_Over : UI_Scene
         ScoreText
     }
 
-    private TouchScreenKeyboard overlayKeyboard;
-
     public override void Init()
     {
         base.Init();
 
-        Bind<InputField>(typeof(InputFields));
         Bind<Button>(typeof(Buttons));
-        Bind<TextMeshProUGUI>(typeof(Texts));
+        Bind<Text>(typeof(Texts));
 
-        GetText((int)Texts.ScoreText).text = $"{Managers.Game.CurrentScore}";
-
-        if(Managers.Game.OverType == Define.EndGame.Clear)
-        {
-            Get<InputField>((int) InputFields.UserNameField).gameObject.SetActive(true);
-            GetButton((int)Buttons.ConfirmButton).gameObject.SetActive(true);
-
-            overlayKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
-        }
+        Get<Text>((int)Texts.ScoreText).text = $"{Managers.Game.CurrentScore}";
+        Managers.Sound.PlayBGM(Define.BGM.Over);
     }
 
-    private void Update()
+    void OnClickedRetryButton()
     {
-        if (overlayKeyboard != null)
-            Get<InputField>((int)InputFields.UserNameField).text = overlayKeyboard.text;
+        Managers.Sound.PlaySoundEffect(Define.SoundEffect.Click);
+        Managers.Scene.Load(Define.Scene.Game);
     }
 
-    void InputCheck()
+    void OnClickedExitButton()
     {
-        InputField inputField = Get<InputField>((int)InputFields.UserNameField);
-        if (string.IsNullOrEmpty(inputField.text))
-            return;
-
+        Managers.Sound.PlaySoundEffect(Define.SoundEffect.Click);
+        Managers.Scene.Load(Define.Scene.Title);
     }
 }

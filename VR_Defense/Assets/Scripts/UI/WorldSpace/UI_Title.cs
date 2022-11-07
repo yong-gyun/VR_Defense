@@ -24,6 +24,7 @@ public class UI_Title : UI_WorldSpace
     void OnClickStartButton()
     {
         Managers.Scene.Load(Define.Scene.Game);
+        Managers.Sound.PlaySoundEffect(Define.SoundEffect.Click);
     }
 
     void OnClickSettingButton()

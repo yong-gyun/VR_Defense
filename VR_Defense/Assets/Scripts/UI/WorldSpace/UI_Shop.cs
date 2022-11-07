@@ -18,11 +18,14 @@ public class UI_Shop : UI_WorldSpace
     enum Texts
     {
         DamageStatText,
-        FireSpeedStatText
+        FireSpeedStatText,
+        DamagePrice,
+        SlowPrice,
+        StunPrice
     }
 
-    int _damageBoomPrice = 25;
-    int _slowBoomPrice = 22;
+    int _damageBoomPrice = 45;
+    int _slowBoomPrice = 20;
     int _stunBoomPrice = 25;
     int _upgradeDamagePrice = 8;
     int _upgradeFireSpeedPrice = 5;
@@ -31,16 +34,12 @@ public class UI_Shop : UI_WorldSpace
     float _upgradeFireSpeed = 0.03f;
     float _coolTime = 5f;
 
-
-    bool isBuyDamageBomb;
-    bool isBuySlowBomb;
-    bool isBuyStunBomb;
     Bomb bomb = null;
 
     public override void Init()
     {
         base.Init();
-
+        Managers.UI.worldSpaces.Add(this);
         bomb = FindObjectOfType<Bomb>();
 
         Bind<Button>(typeof(Buttons));
@@ -54,10 +53,15 @@ public class UI_Shop : UI_WorldSpace
 
         GetText((int)Texts.DamageStatText).text = $"{Managers.Game.Player.damage}";
         GetText((int)Texts.FireSpeedStatText).text = $"{Managers.Game.Player.fireSpeed}";
+        GetText((int)Texts.DamagePrice).text = $"{_damageBoomPrice}G";
+        GetText((int)Texts.SlowPrice).text = $"{_slowBoomPrice}G";
+        GetText((int)Texts.StunPrice).text = $"{_stunBoomPrice}G";
     }
 
     void OnBuyDamageBoom()
     {
+        Managers.Sound.PlaySoundEffect(Define.SoundEffect.Click);
+
         if (Managers.Game.CurrentGold < _damageBoomPrice)
             return;
 
@@ -67,6 +71,8 @@ public class UI_Shop : UI_WorldSpace
 
     void OnBuySlowBoom()
     {
+        Managers.Sound.PlaySoundEffect(Define.SoundEffect.Click);
+
         if (Managers.Game.CurrentGold < _slowBoomPrice)
             return;
 
@@ -76,6 +82,8 @@ public class UI_Shop : UI_WorldSpace
 
     void OnBuyStunBoom()
     {
+        Managers.Sound.PlaySoundEffect(Define.SoundEffect.Click);
+
         if (Managers.Game.CurrentGold < _stunBoomPrice)
             return;
 
@@ -85,6 +93,8 @@ public class UI_Shop : UI_WorldSpace
 
     void UpgradeDamage()
     {
+        Managers.Sound.PlaySoundEffect(Define.SoundEffect.Click);
+
         if (Managers.Game.CurrentGold < _upgradeDamagePrice)
             return;
 
@@ -95,12 +105,15 @@ public class UI_Shop : UI_WorldSpace
 
     void UpgradeFireSpeed()
     {
+        Managers.Sound.PlaySoundEffect(Define.SoundEffect.Click);
+
         if (Managers.Game.CurrentGold < _upgradeFireSpeedPrice)
             return;
 
         Managers.Game.CurrentGold -= _upgradeFireSpeedPrice;
         Managers.Game.Player.fireSpeed -= _upgradeFireSpeed;
-        GetText((int)Texts.FireSpeedStatText).text = $"{Managers.Game.Player.fireSpeed}";
+        float fireSpeed = Managers.Game.Player.fireSpeed;
+        GetText((int)Texts.FireSpeedStatText).text = string.Format("{0:0.##}", fireSpeed);
     }
 
     IEnumerator Cooltime(Define.BombType type)

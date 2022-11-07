@@ -27,8 +27,7 @@ public class Tower : MonoBehaviour
             return;
        _hp -= damage;
 
-        Debug.Log($"On damaged tower HP : {_hp}");
-        if(_hp <= 0)
+        if(_hp <= 0 && isHit == false)
         {
             StartCoroutine(OnDie());
         }
@@ -46,13 +45,18 @@ public class Tower : MonoBehaviour
     {
         if (isHit == true)
             yield break;
-        
+
         _hp = 0;
         isHit = true;
+        Managers.Game.Over(); 
+        yield return new WaitForSeconds(1f);
+
 
         for (int j = 0; j < blastLocations.Length; j++)
         {
             GameObject go = Managers.Resource.Instantiate("Effect/ExplosionParticle", blastLocations[j].transform.position, Quaternion.identity);
+            Managers.Sound.PlaySoundEffect(Define.SoundEffect.ExplosionTower);
+            Managers.Sound.StopBGM();
             Managers.Resource.Destroy(go, 3f);
             yield return new WaitForSeconds(0.25f);
         }
@@ -65,6 +69,20 @@ public class Tower : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        Managers.UI.ShowUIScene<UI_Over>();
+        Managers.Resource.Instantiate("UI/WroldSpace/UI_Over", new Vector3(-1, 22, 0.5f), Quaternion.identity);
+    }
+
+    IEnumerator Healing()
+    {
+        WaitForSeconds wait = new WaitForSeconds(8);
+
+        while (true)
+        {
+            yield return wait;
+            _hp += 20;
+
+            if (_hp > _maxHP)
+                _hp = _maxHP;
+        }
     }
 }

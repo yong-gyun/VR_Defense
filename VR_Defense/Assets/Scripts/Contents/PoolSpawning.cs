@@ -10,7 +10,10 @@ public class PoolSpawning : MonoBehaviour
     GameObject _inferno;
     GameObject _crab;
     public static int mobCount = 0;
-    int _currentWave = 0;
+    int _currentWave = 1;
+
+    IEnumerator waveCorutine;
+
     enum Wave
     {
         First,
@@ -61,12 +64,19 @@ public class PoolSpawning : MonoBehaviour
         return mob;
     }
 
+    public void StopWave()
+    {
+        StopCoroutine(waveCorutine);
+        gameObject.SetActive(false);
+    }
+
     IEnumerator FirstWave()
     {
+        waveCorutine = FirstWave();
         Managers.UI.ShowWorldSpaceUI<UI_Wave>().Init("Wave 1");
         yield return new WaitForSeconds(3f);
 
-        float delay = 5;
+        float delay = 10;
         WaitForSeconds wait = new WaitForSeconds(delay);
         
         GetMob(Define.MobType.Crab, 4);
@@ -82,13 +92,11 @@ public class PoolSpawning : MonoBehaviour
         GetMob(Define.MobType.Crab, 1);
         GetMob(Define.MobType.Crab, 2);
         GetMob(Define.MobType.Crab, 3);
-        GetMob(Define.MobType.Crab, 4);
-        GetMob(Define.MobType.Crab, 5);
         yield return wait;
 
-        GetMob(Define.MobType.Wolf, 1);
-        GetMob(Define.MobType.Wolf, 2);
-        GetMob(Define.MobType.Wolf, 3);
+        GetMob(Define.MobType.Wolf, 4);
+        GetMob(Define.MobType.Wolf, 5);
+        GetMob(Define.MobType.Wolf, 0);
         yield return wait;
 
         GetMob(Define.MobType.Crab, 1);
@@ -97,24 +105,25 @@ public class PoolSpawning : MonoBehaviour
         GetMob(Define.MobType.Crab, 4);
         yield return wait;
 
-
         GetMob(Define.MobType.Wolf, 1);
         GetMob(Define.MobType.Wolf, 2);
-        GetMob(Define.MobType.Crab, 5);
-        GetMob(Define.MobType.Crab, 6);
-        yield return wait;
-        
-        GetMob(Define.MobType.Crab, 1);
-        GetMob(Define.MobType.Crab, 2);
-        GetMob(Define.MobType.Crab, 3);
+        GetMob(Define.MobType.InfernoDragon, 3);
         GetMob(Define.MobType.Crab, 4);
-        GetMob(Define.MobType.Crab, 5);
+        yield return wait;
+
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.InfernoDragon, 3);
+        GetMob(Define.MobType.InfernoDragon, 2);
+        GetMob(Define.MobType.Crab, 0);
         yield return wait;
 
         while (mobCount > 0)
             yield return null;
 
-        Managers.Game.Tower.Heal(Managers.Game.Tower.MaxHP / 2);
+        Managers.Game.Tower.Heal(Managers.Game.Tower.MaxHP / 4);
+        waveCorutine = SecondWave();
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(waveCorutine);
     }
 
     IEnumerator SecondWave()
@@ -123,16 +132,16 @@ public class PoolSpawning : MonoBehaviour
         Managers.UI.ShowWorldSpaceUI<UI_Wave>().Init("Wave 2");
         yield return new WaitForSeconds(3f);
 
-        float delay = 5;
+        float delay = 8f;
         WaitForSeconds wait = new WaitForSeconds(delay);
 
         GetMob(Define.MobType.Crab, 4);
-        GetMob(Define.MobType.Crab, 3);
+        GetMob(Define.MobType.InfernoDragon, 3);
         GetMob(Define.MobType.Crab, 0);
         yield return wait;          
                                     
         GetMob(Define.MobType.Crab, 1);
-        GetMob(Define.MobType.Crab, 2);
+        GetMob(Define.MobType.Wolf, 2);
         GetMob(Define.MobType.Crab, 3);
         yield return wait;          
                                     
@@ -144,37 +153,180 @@ public class PoolSpawning : MonoBehaviour
         yield return wait;          
                                     
         GetMob(Define.MobType.Crab, 1);
-        GetMob(Define.MobType.Wolf, 2);
-        GetMob(Define.MobType.Wolf, 3);
-        GetMob(Define.MobType.Crab, 4);
+        GetMob(Define.MobType.InfernoDragon, 4);
         GetMob(Define.MobType.Wolf, 5);
-        GetMob(Define.MobType.Crab, 6);
+        GetMob(Define.MobType.Crab, 0);
         yield return wait;          
                                     
                                     
         GetMob(Define.MobType.Wolf, 1);
         GetMob(Define.MobType.Wolf, 2);
         GetMob(Define.MobType.Crab, 5);
-        GetMob(Define.MobType.Crab, 6);
+        GetMob(Define.MobType.Crab, 0);
         yield return wait;          
                                     
         GetMob(Define.MobType.Crab, 1);
-        GetMob(Define.MobType.Crab, 2);
+        GetMob(Define.MobType.Crab, 5);
+        GetMob(Define.MobType.InfernoDragon, 4);
+        GetMob(Define.MobType.InfernoDragon, 2);
+        yield return wait;
+
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.Wolf, 2);
         GetMob(Define.MobType.Crab, 3);
         GetMob(Define.MobType.Crab, 4);
         GetMob(Define.MobType.Crab, 5);
         yield return wait;
+
+        Managers.Game.Tower.Heal(Managers.Game.Tower.MaxHP / 2);
+        waveCorutine = ThirdWave();
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(waveCorutine);
     }
 
-    /*
+    
     IEnumerator ThirdWave()
     {
+        waveCorutine = FirstWave();
         Managers.UI.ShowWorldSpaceUI<UI_Wave>().Init("Wave 3");
+        yield return new WaitForSeconds(3f);
+
+        float delay = 6;
+        WaitForSeconds wait = new WaitForSeconds(delay);
+
+        GetMob(Define.MobType.Crab, 4);
+        GetMob(Define.MobType.Crab, 3);
+        GetMob(Define.MobType.Crab, 0);
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        yield return wait;
+
+        GetMob(Define.MobType.Crab, 1);
+        GetMob(Define.MobType.Crab, 2);
+        GetMob(Define.MobType.Crab, 3);
+        GetMob(Define.MobType.InfernoDragon, 4);
+        GetMob(Define.MobType.InfernoDragon, 5);
+        yield return wait;
+
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Wolf, 3);
+        yield return wait;
+
+        GetMob(Define.MobType.InfernoDragon, 4);
+        GetMob(Define.MobType.InfernoDragon, 5);
+        GetMob(Define.MobType.InfernoDragon, 0);
+        yield return wait;
+
+        GetMob(Define.MobType.Crab, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Wolf, 3);
+        GetMob(Define.MobType.Crab, 4);
+        yield return wait;
+
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.InfernoDragon, 3);
+        GetMob(Define.MobType.Crab, 4);
+        yield return wait;
+
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.InfernoDragon, 3);
+        GetMob(Define.MobType.InfernoDragon, 3);
+        GetMob(Define.MobType.Crab, 0);
+        yield return wait;
+
+        while (mobCount > 0)
+            yield return null;
+
+        Managers.Game.Tower.Heal(Managers.Game.Tower.MaxHP);
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(waveCorutine);
     }
 
     IEnumerator LastWave()
     {
-        Managers.UI.ShowWorldSpaceUI<UI_Wave>().Init("Last Wave");
+        waveCorutine = FirstWave();
+        Managers.UI.ShowWorldSpaceUI<UI_Wave>().Init("Last wave");
+        yield return new WaitForSeconds(3f);
+
+        float delay = 3;
+        WaitForSeconds wait = new WaitForSeconds(delay);
+
+        GetMob(Define.MobType.Crab, 4);
+        GetMob(Define.MobType.Wolf, 3);
+        GetMob(Define.MobType.Crab, 0);
+        GetMob(Define.MobType.InfernoDragon, 1);
+        yield return wait;
+
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Wolf, 3);
+        GetMob(Define.MobType.Wolf, 2);
+        yield return wait;
+
+        GetMob(Define.MobType.InfernoDragon, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Wolf, 3);
+        yield return wait;
+
+        GetMob(Define.MobType.InfernoDragon, 4);
+        GetMob(Define.MobType.InfernoDragon, 5);
+        GetMob(Define.MobType.Wolf, 0);
+        yield return wait;
+        
+
+        GetMob(Define.MobType.InfernoDragon, 1);
+        GetMob(Define.MobType.InfernoDragon, 2);
+        GetMob(Define.MobType.InfernoDragon, 4);
+        yield return wait;
+
+        GetMob(Define.MobType.InfernoDragon, 1);
+        GetMob(Define.MobType.InfernoDragon, 3);
+        GetMob(Define.MobType.InfernoDragon, 4);
+        yield return wait;
+        
+        Managers.Resource.Instantiate("Character/Mob/Boss", spawnPoint[0].position, Quaternion.identity);
+        mobCount++;
+
+        GetMob(Define.MobType.InfernoDragon, 3);
+        GetMob(Define.MobType.InfernoDragon, 3);
+        GetMob(Define.MobType.InfernoDragon, 0);
+        yield return wait;
+
+        GetMob(Define.MobType.InfernoDragon, 1);
+        GetMob(Define.MobType.InfernoDragon, 3);
+        GetMob(Define.MobType.InfernoDragon, 4);
+        yield return wait;
+
+        GetMob(Define.MobType.Crab, 4);
+        GetMob(Define.MobType.Wolf, 3);
+        GetMob(Define.MobType.Crab, 0);
+        GetMob(Define.MobType.InfernoDragon, 1);
+        yield return wait;
+
+        GetMob(Define.MobType.Wolf, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Wolf, 3);
+        GetMob(Define.MobType.Wolf, 2);
+        yield return wait;
+
+        GetMob(Define.MobType.InfernoDragon, 1);
+        GetMob(Define.MobType.Wolf, 2);
+        GetMob(Define.MobType.Wolf, 3);
+        yield return wait;
+
+        GetMob(Define.MobType.InfernoDragon, 4);
+        GetMob(Define.MobType.InfernoDragon, 5);
+        GetMob(Define.MobType.Wolf, 0);
+        yield return wait;
+
+        while (mobCount > 0)
+            yield return null;
+
+        yield return new WaitForSeconds(2f);
+        Managers.Sound.PlayBGM(Define.BGM.Clear);
+        Managers.Game.Over();
+        
     }
-    */
 }

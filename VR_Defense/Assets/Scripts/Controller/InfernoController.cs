@@ -9,6 +9,7 @@ public class InfernoController : MobBase
     protected override void Awake()
     {
         base.Awake();
+        _stat = Managers.Data.infernoStat;
         _type = Define.MobType.InfernoDragon;
         _firePos = transform.Find("FirePos");
         _myGold = 10;

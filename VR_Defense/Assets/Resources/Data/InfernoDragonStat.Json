@@ -1,0 +1,25 @@
+{
+  "stat": [
+    {
+      "level": 1,
+      "hp": 20,
+      "damage": 18,
+      "speed": 5.5,
+      "attackRange": 25
+    },
+    {
+      "level": 2,
+      "hp": 45,
+      "damage": 30,
+      "speed": 5.5,
+      "attackRange": 25
+    },
+    {
+      "level": 3,
+      "hp": 60,
+      "damage": 50,
+      "speed": 5.5,
+      "attackRange": 25
+    }
+  ]
+}

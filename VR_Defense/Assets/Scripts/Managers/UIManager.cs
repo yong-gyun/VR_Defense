@@ -5,7 +5,7 @@ using UnityEngine;
 public class UIManager
 {
     Stack<UI_Popup> _stackPopup = new Stack<UI_Popup>();
-    List<UI_WorldSpace> _listWorldSpace = new List<UI_WorldSpace>();
+    public List<UI_WorldSpace> worldSpaces { get; set; } = new List<UI_WorldSpace>();
     UI_Scene _sceneUI = null;
     int _order = 10;
 
@@ -57,7 +57,7 @@ public class UIManager
             name = typeof(T).Name;
 
         GameObject go = Managers.Resource.Instantiate($"UI/WorldSpace/{name}", parent);
-
+        
         Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
         canvas.renderMode = RenderMode.WorldSpace;
         return go.GetOrAddComponent<T>();
@@ -94,7 +94,7 @@ public class UIManager
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
 
-        GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}", Root.transform);
+        GameObject go = Managers.Resource.Instantiate($"UI/{name}", Root.transform);
         T sceneUI = Util.GetOrAddComponent<T>(go);
         _sceneUI = sceneUI;
         return sceneUI;
@@ -105,12 +105,14 @@ public class UIManager
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
 
-        foreach(UI_WorldSpace world in _listWorldSpace)
+        Debug.Log(name);
+        
+        for(int i = 0; i < worldSpaces.Count; i++)
         {
-            if(world.name == name)
+            if (worldSpaces[i].name == name)
             {
-                world.gameObject.SetActive(false);
-                break;
+                worldSpaces[i].gameObject.SetActive(false);
+                return;
             }
         }
     }

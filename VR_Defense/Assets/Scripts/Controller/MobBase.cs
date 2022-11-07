@@ -14,7 +14,7 @@ public class MobBase : MonoBehaviour
     
     protected Animator _animator;
     protected Transform _target;
-    protected MobStat[] _stat;
+    protected Dictionary<int, MobStat> _stat;
     [SerializeField] protected Define.State _state;
     protected Define.MobType _type;
     protected float _maxHP;
@@ -61,6 +61,7 @@ public class MobBase : MonoBehaviour
                     _animator.CrossFade("Hit", 0.1f);
                     break;
                 case Define.State.Stun:
+                    Debug.Log("Stun");
                     _animator.CrossFade("Stun", 0.1f);
                     break;
                 case Define.State.Die:
@@ -76,6 +77,7 @@ public class MobBase : MonoBehaviour
         _agent = Util.GetOrAddComponent<NavMeshAgent>(gameObject);
         _agent.avoidancePriority = _avoidance++;
         _agent.radius = 0.25f;
+        _agent.angularSpeed = 0f;
         Managers.Game.mobs.Add(this);
         _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBar>(transform);
     }
@@ -95,11 +97,14 @@ public class MobBase : MonoBehaviour
 
     public virtual void Init(int level)
     {
-        
+        _maxHP = _stat[level].hp;
+        _speed = _stat[level].speed;
+        _attackRange = _stat[level].attackRange;
+        _damage = _stat[level].damage;
+
         _hp = MaxHP;
         _state = Define.State.Move;
         _agent.speed = _speed;
-        
     }
 
     protected virtual void UpdateMove()
@@ -165,11 +170,10 @@ public class MobBase : MonoBehaviour
         Managers.Game.Tower.OnDamaged(_damage); 
     }
 
-    public virtual void OnStun(float stunTime = 2)
+    public virtual void OnStun()
     {
-        State = Define.State.Stun; 
-        GameObject go = Managers.Resource.Instantiate("Effect/StunParticle");
-        _agent.SetDestination(transform.position);
+        State = Define.State.Stun;
+        _agent.enabled = false;
     }
 
     public virtual void OnDie()

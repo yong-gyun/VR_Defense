@@ -60,12 +60,17 @@ public class GameManager
 
     public void Over()
     {
+        GameObject.FindObjectOfType<PoolSpawning>().StopWave(); 
+        Managers.Pool.CollectPool();
         Player.transform.position = new Vector3(-1.25f, 20, -4);
         Player.transform.rotation = Quaternion.Euler(Vector3.right * 15);
         CurrentScore += CurrentGold + (int) Tower.HP;
-        Managers.Resource.Destroy(Player.gun);
+        Managers.Resource.Destroy(Player.rightGun);
+        Player.enabled = false;
         Managers.UI.CloseWorldSpaceUI<UI_Shop>();
         Managers.UI.CloseWorldSpaceUI<UI_Interface>();
-        Managers.Pool.Clear();
+        UI_Over overUI = Managers.UI.MakeWorldSpaceUI<UI_Over>(Managers.UI.Root.transform);
+        overUI.transform.position = new Vector3(-1, 20, 0.5f);
+        _player = null;
     }
 }

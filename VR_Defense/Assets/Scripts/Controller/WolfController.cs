@@ -8,6 +8,7 @@ public class WolfController : MobBase
     {
         base.Awake();
 
+        _stat = Managers.Data.wolfStat;
         _type = Define.MobType.Wolf;
         _myGold = 4;
         _myScore = 25;

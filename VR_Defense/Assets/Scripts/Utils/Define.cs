@@ -17,6 +17,7 @@ public class Define
 
     public enum State
     {
+        Idle,
         Move,
         Attack,
         Hit,
@@ -59,17 +60,30 @@ public class Define
 
     public enum BGM
     {
-
+        Title,
+        Game,
+        Boss,
+        Clear,
+        Over
     }
+
     public enum SoundEffect
     {
-
+        Click,
+        Fire,
+        Stun,
+        Slow,
+        Damage,
+        ExplosionTower,
+        Fireball,
+        MaxCount
     }
 
     public enum EndGame
     {
         Unknow,
         Clear,
-        Over
+        Over, 
+        MaxCount
     }
 }
