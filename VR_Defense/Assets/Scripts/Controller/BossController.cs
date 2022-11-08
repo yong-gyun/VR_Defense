@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+
 public class BossController : MobBase
 {
     public override Define.State State 
@@ -37,7 +37,7 @@ public class BossController : MobBase
     protected override void Awake()
     {
         _animator = Util.GetOrAddComponent<Animator>(gameObject);
-        _agent = Util.GetOrAddComponent<NavMeshAgent>(gameObject);
+        _agent = Util.GetOrAddComponent<UnityEngine.AI.NavMeshAgent>(gameObject);
         _agent.avoidancePriority = 15;
         _agent.radius = 0.25f;
         _agent.angularSpeed = 0f;
@@ -127,6 +127,7 @@ public class BossController : MobBase
             return;
 
         _hp -= damage;
+        _hpBar.OnUpdateUI(_hp / _maxHP);
         Debug.Log($"{gameObject.name} {_hp}");
 
         _agent.SetDestination(transform.position);
