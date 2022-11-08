@@ -44,7 +44,6 @@ public class GameManager
     }
     public Define.EndGame OverType = Define.EndGame.Unknow;
     public List<MobBase> mobs { get; set; } = new List<MobBase>(); 
-
     public int CurrentScore { get; set; } = 0;
     public int CurrentGold { get; set; } = 0;
     Tower _tower = null;
@@ -72,5 +71,10 @@ public class GameManager
         UI_Over overUI = Managers.UI.MakeWorldSpaceUI<UI_Over>(Managers.UI.Root.transform);
         overUI.transform.position = new Vector3(-1, 20, 0.5f);
         _player = null;
+    }
+
+    public void Clear()
+    {
+        mobs.Clear();
     }
 }

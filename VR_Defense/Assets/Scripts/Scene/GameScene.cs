@@ -8,7 +8,7 @@ public class GameScene : SceneBase
     {
         base.Init();
 
-        Managers.Game.CurrentGold = 20;
+        Managers.Game.CurrentGold = 200000;
         Managers.Game.CurrentScore = 0;
         Managers.Game.Player.transform.position = new Vector3(-1, 13, 2.5f);
         Managers.Game.Player.transform.rotation = Quaternion.Euler(-1, 180, 2.5f);

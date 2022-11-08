@@ -1575,7 +1575,7 @@ GameObject:
   - component: {fileID: 189222174}
   - component: {fileID: 189222173}
   m_Layer: 5
-  m_Name: Price (1)
+  m_Name: FireSpeedPrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10138,7 +10138,7 @@ GameObject:
   - component: {fileID: 2093599690}
   - component: {fileID: 2093599689}
   m_Layer: 5
-  m_Name: Price
+  m_Name: AttackPrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

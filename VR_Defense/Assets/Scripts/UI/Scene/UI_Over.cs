@@ -25,6 +25,8 @@ public class UI_Over : UI_WorldSpace
         Bind<Text>(typeof(Texts));
 
         Get<Text>((int)Texts.ScoreText).text = $"{Managers.Game.CurrentScore}";
+        GetButton((int)Buttons.RetryButton).onClick.AddListener(OnClickedRetryButton);
+        GetButton((int)Buttons.ExitButton).onClick.AddListener(OnClickedExitButton);
         Managers.Sound.PlayBGM(Define.BGM.Over);
     }
 

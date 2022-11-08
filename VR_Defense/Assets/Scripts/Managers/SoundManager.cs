@@ -38,6 +38,8 @@ public class SoundManager
                 go.transform.SetParent(root.transform);
             }
 
+            _bgmSource.loop = true;
+
             for (int i = 0; i < _effectSources.Length; i++)
             {
                 GameObject go = new GameObject { name = $"SFX_Source({i + 1})" };

@@ -33,10 +33,10 @@ public class Tower : MonoBehaviour
         }
     }
 
-    public void Heal(float value = 100)
+    public void Heal(float value)
     {
         _hp += value;
-
+        Debug.Log($"Heal {value}");
         if (_hp > _maxHP)
             _hp = _maxHP;
     }

@@ -143,6 +143,7 @@ public class MobBase : MonoBehaviour
         _hp -= damage;
         State = Define.State.Hit;
         _hpBar.OnUpdateUI(_hp / _maxHP);
+        Debug.Log($"{gameObject.name} {_hp}");
 
         //@Todo make knock back
         _agent.SetDestination(transform.position);
@@ -179,7 +180,7 @@ public class MobBase : MonoBehaviour
     public virtual void OnDie()
     {
         Debug.Log($"Die {name}");
-        PoolSpawning.mobCount--;
+        Managers.Game.mobs.Remove(this);
         Managers.Pool.Push(GetComponent<Poolable>());
     }
 }

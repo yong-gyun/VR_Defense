@@ -21,7 +21,9 @@ public class UI_Shop : UI_WorldSpace
         FireSpeedStatText,
         DamagePrice,
         SlowPrice,
-        StunPrice
+        StunPrice,
+        AttackPrice,
+        FireSpeedPrice,
     }
 
     int _damageBoomPrice = 45;
@@ -30,7 +32,10 @@ public class UI_Shop : UI_WorldSpace
     int _upgradeDamagePrice = 8;
     int _upgradeFireSpeedPrice = 5;
 
-    float _upgradeDamage = 2;
+    float maxFireSpeed = 0.2f;
+    float maxDamage = 20;
+
+    float _upgradeDamage = 1.5f;
     float _upgradeFireSpeed = 0.03f;
     float _coolTime = 5f;
 
@@ -56,6 +61,8 @@ public class UI_Shop : UI_WorldSpace
         GetText((int)Texts.DamagePrice).text = $"{_damageBoomPrice}G";
         GetText((int)Texts.SlowPrice).text = $"{_slowBoomPrice}G";
         GetText((int)Texts.StunPrice).text = $"{_stunBoomPrice}G";
+        GetText((int)Texts.AttackPrice).text = $"{_upgradeDamagePrice}G";
+        GetText((int)Texts.FireSpeedPrice).text = $"{_upgradeFireSpeedPrice}G";
     }
 
     void OnBuyDamageBoom()
@@ -100,7 +107,9 @@ public class UI_Shop : UI_WorldSpace
 
         Managers.Game.CurrentGold -= _upgradeDamagePrice;
         Managers.Game.Player.damage += _upgradeDamage;
-        GetText((int)Texts.DamageStatText).text = $"{Managers.Game.Player.damage}"; 
+        _upgradeDamagePrice += 2;
+        GetText((int)Texts.DamageStatText).text = $"{Managers.Game.Player.damage}";
+        GetText((int)Texts.AttackPrice).text = $"{_upgradeDamagePrice}G";
     }
 
     void UpgradeFireSpeed()
@@ -113,7 +122,9 @@ public class UI_Shop : UI_WorldSpace
         Managers.Game.CurrentGold -= _upgradeFireSpeedPrice;
         Managers.Game.Player.fireSpeed -= _upgradeFireSpeed;
         float fireSpeed = Managers.Game.Player.fireSpeed;
+        _upgradeFireSpeedPrice += 1;
         GetText((int)Texts.FireSpeedStatText).text = string.Format("{0:0.##}", fireSpeed);
+        GetText((int)Texts.FireSpeedPrice).text = $"{_upgradeFireSpeedPrice}G";
     }
 
     IEnumerator Cooltime(Define.BombType type)

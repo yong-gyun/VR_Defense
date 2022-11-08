@@ -58,7 +58,7 @@ public class BossController : MobBase
     }
     public void Init()
     {
-        _maxHP = 400;
+        _maxHP = 300;
         _speed = 5;
         _attackRange = 25;
         _damage = 30;
@@ -117,10 +117,29 @@ public class BossController : MobBase
         State = Define.State.Idle;
     }
 
+    public override void OnDamaged(float damage)
+    {
+        if (_state == Define.State.Die)
+            return;
+
+        _hp -= damage;
+        _hpBar.OnUpdateUI(_hp / _maxHP);
+        Debug.Log($"{gameObject.name} {_hp}");
+
+        _agent.SetDestination(transform.position);
+
+        if (_hp <= 0)
+        {
+            State = Define.State.Die;
+
+            Managers.Game.CurrentGold += _myGold;
+            Managers.Game.CurrentScore += _myScore;
+        }
+    }
+
     public override void OnDie()
     {
         Debug.Log($"Die {name}");
-        PoolSpawning.mobCount--;
         Managers.Resource.Destroy(gameObject);
     }
 }
