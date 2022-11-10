@@ -15,6 +15,7 @@ public class MobBase : MonoBehaviour
     protected Animator _animator;
     protected Transform _target;
     protected Dictionary<int, MobStat> _stat;
+    
     [SerializeField] protected Define.State _state;
     protected Define.MobType _type;
     protected float _maxHP;
@@ -22,7 +23,7 @@ public class MobBase : MonoBehaviour
     protected float _damage;
     protected float _speed;
     protected float _attackRange;
-
+    
     protected int _myScore;
     protected int _myGold;
     static int _avoidance = 30;
@@ -76,9 +77,8 @@ public class MobBase : MonoBehaviour
         _animator = Util.GetOrAddComponent<Animator>(gameObject);
         _agent = Util.GetOrAddComponent<NavMeshAgent>(gameObject);
         _agent.avoidancePriority = _avoidance++;
-        _agent.radius = 0.25f;
+        _agent.radius = 0.35f;
         _agent.angularSpeed = 0f;
-        Managers.Game.mobs.Add(this);
         _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBar>(transform);
     }
 
@@ -101,7 +101,8 @@ public class MobBase : MonoBehaviour
         _speed = _stat[level].speed;
         _attackRange = _stat[level].attackRange;
         _damage = _stat[level].damage;
-
+        _myGold = Random.Range(_stat[level].minGold, _stat[level].maxGold);
+        _myScore = _stat[level].score;
         _hp = MaxHP;
         _state = Define.State.Move;
         _agent.speed = _speed;
@@ -151,7 +152,6 @@ public class MobBase : MonoBehaviour
         if (_hp <= 0)
         {
             State = Define.State.Die;
-
             Managers.Game.CurrentGold += _myGold;
             Managers.Game.CurrentScore += _myScore;
         }

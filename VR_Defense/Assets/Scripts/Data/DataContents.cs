@@ -16,6 +16,9 @@ public class MobStat
     public float damage;
     public float speed;
     public float attackRange;
+    public int minGold;
+    public int maxGold;
+    public int score;
 }
 
 [Serializable]

@@ -73,8 +73,16 @@ public class UIManager
         if (go == null)
             return null;
 
-        go.gameObject.SetActive(true);
-        return go.GetComponent<T>();
+        T component = go.GetComponent<T>();
+
+        if(component != null)
+        {
+            go.gameObject.SetActive(true);
+            worldSpaces.Add(component);
+            return component;
+        }
+
+        return null;
     }
 
     public T ShowUIPopup<T>(string name = null) where T : UI_Popup
@@ -136,5 +144,11 @@ public class UIManager
     {
         while (_stackPopup.Count > 0)
             ClosePopupUI();
+    }
+
+    public void Clear()
+    {
+        worldSpaces.Clear();
+        CloseAllPopupUI();
     }
 }

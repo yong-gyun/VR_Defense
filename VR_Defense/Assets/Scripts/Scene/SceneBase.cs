@@ -12,17 +12,25 @@ public class SceneBase : MonoBehaviour
 
     public virtual void Init()
     {
-        GameObject go = GameObject.Find("UIHelpers");
+        Clear();
+
+        GameObject go = GameObject.Find("@UIHelpers");
         OVRInputModule inputModule = null;
-        
-        if (go == null)
+
+        if(go == null)
         {
             go = Managers.Resource.Instantiate("UI/UIHelpers");
-            go.name = "@UIHelpers";
+            go.name = "@UIHelper";
         }
 
         inputModule = go.GetComponentInChildren<OVRInputModule>();
         inputModule.rayTransform = GameObject.Find("CenterEyeAnchor").transform;
         inputModule.m_Cursor = Managers.Input.LaserPointer;
+    }
+
+    public virtual void Clear() 
+    { 
+        Managers.Game.Clear();
+        Managers.UI.Clear(); 
     }
 }

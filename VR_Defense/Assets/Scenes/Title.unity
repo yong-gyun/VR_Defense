@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5173,6 +5173,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
+      propertyPath: _monoscopic
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
 --- !u!4 &1249232398 stripped
@@ -5217,7 +5221,7 @@ MonoBehaviour:
   volumeTrigger: {fileID: 0}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 2147483647
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
   antialiasingMode: 0
@@ -8067,6 +8071,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3168621393554632980, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3168621393554632980, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3168621393554632980, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0.623131
+      objectReference: {fileID: 0}
+    - target: {fileID: 3168621393554632980, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0.623131
+      objectReference: {fileID: 0}
+    - target: {fileID: 3168621393554632980, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0.6320754
+      objectReference: {fileID: 0}
+    - target: {fileID: 3168621393554632980, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.a
+      value: 0.49019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 3168621393554632980, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0.7735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 3168621393554632980, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0.7735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 3168621393554632980, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 0.7735849
+      objectReference: {fileID: 0}
     - target: {fileID: 7656292799725671621, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
@@ -8159,6 +8199,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Title
       objectReference: {fileID: 0}
+    - target: {fileID: 7656292800680743603, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7656292801202751931, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 741f5924645ed5346af21495347e0a3c, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc10331baa7c4424398a3b44cf8c244f, type: 3}
 --- !u!1 &1953373433

@@ -127,7 +127,6 @@ public class BossController : MobBase
             return;
 
         _hp -= damage;
-        _hpBar.OnUpdateUI(_hp / _maxHP);
         Debug.Log($"{gameObject.name} {_hp}");
 
         _agent.SetDestination(transform.position);
@@ -144,6 +143,7 @@ public class BossController : MobBase
     public override void OnDie()
     {
         Debug.Log($"Die {name}");
+        Managers.Game.mobs.Remove(this);
         Managers.Resource.Destroy(gameObject);
     }
 }

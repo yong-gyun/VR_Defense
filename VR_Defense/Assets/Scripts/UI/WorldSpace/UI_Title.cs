@@ -29,6 +29,6 @@ public class UI_Title : UI_WorldSpace
 
     void OnClickSettingButton()
     {
-        //Managers.UI.ShowUIPopup<>();
+        Application.Quit();
     }
 }

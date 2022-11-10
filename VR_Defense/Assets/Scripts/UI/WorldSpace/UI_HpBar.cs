@@ -12,7 +12,9 @@ public class UI_HpBar : UI_WorldSpace
 
     public override void Init()
     {
-        base.Init();
+        Canvas canvas = Util.GetOrAddComponent<Canvas>(gameObject);
+        canvas.renderMode = RenderMode.WorldSpace;
+        canvas.worldCamera = Camera.main;
         Bind<Slider>(typeof(Sliders));
     }
 

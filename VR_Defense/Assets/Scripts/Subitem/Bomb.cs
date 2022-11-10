@@ -7,10 +7,9 @@ public class Bomb : MonoBehaviour
     Transform[] _explosionPoints = new Transform[6];
     [SerializeField] List<MobBase> mobs = new List<MobBase>();
 
-    float _damage = 40;
+    float _damage = 60;
     float _slowTime = 6;
     float _stunTime = 4;
-    float _coolTime = 15;
 
     private void Start()
     {
@@ -21,16 +20,11 @@ public class Bomb : MonoBehaviour
     {
         for(int i = 0; i < _explosionPoints.Length; i++)
             _explosionPoints[i] = transform.Find($"ExplosionPoint_{i + 1}");
+        mobs = Managers.Game.mobs;
     }
 
     public void OnExplosion(Define.BombType type)
     {
-        foreach(Poolable poolable in Managers.Pool.poolableList)
-        {
-            if (poolable.IsUsing == true)
-                mobs.Add(poolable.GetComponent<MobBase>());
-        }
-
         switch(type)
         {
             case Define.BombType.Damage:
@@ -50,28 +44,29 @@ public class Bomb : MonoBehaviour
 
     void OnDamageBomb()
     {
-        foreach(MobBase mob in mobs)
-            mob.OnDamaged(_damage);
+        for(int i = 0; i < mobs.Count; i++)
+        {
+            Debug.Log($"damaged {mobs[i]}");
+            mobs[i].OnDamaged(_damage);
+        }
     }
 
     IEnumerator OnSlowBomb()
     {
-        foreach (MobBase mob in mobs)
+        for(int i = 0; i < mobs.Count; i++)
         {
-            float tmpSpeed = mob.MoveSpeed;
-            mob._agent.speed = tmpSpeed / 2;
-            GameObject go = Managers.Resource.Instantiate("Effect/SlowParticle", mob.transform);
+            float tmpSpeed = mobs[i].MoveSpeed;
+            mobs[i]._agent.speed = tmpSpeed / 2;
+            GameObject go = Managers.Resource.Instantiate("Effect/SlowParticle", mobs[i].transform);
 
             Managers.Resource.Destroy(go, _slowTime);
-            
         }
         yield return new WaitForSeconds(_slowTime);
 
-        foreach (MobBase mob in mobs)
+        for (int i = 0; i < mobs.Count; i++)
         {
-            mob._agent.speed = mob.MoveSpeed;
+            mobs[i]._agent.speed = mobs[i].MoveSpeed;
         }
-        
     }
 
     IEnumerator OnStunBomb()

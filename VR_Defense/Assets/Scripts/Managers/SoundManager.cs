@@ -54,6 +54,11 @@ public class SoundManager
         if (_bgmSource.isPlaying)
             _bgmSource.Stop();
 
+        if (type == Define.BGM.Clear)
+            _bgmSource.loop = false;
+        else
+            _bgmSource.loop = true;
+
         _bgmSource.clip = _bgmClips[type];
         _bgmSource.Play();
     }

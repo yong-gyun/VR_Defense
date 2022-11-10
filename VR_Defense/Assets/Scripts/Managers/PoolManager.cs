@@ -29,7 +29,6 @@ public class PoolManager
             go.name = Original.name;
 
             Poolable poolable = go.GetOrAddComponent<Poolable>();
-            Managers.Pool.poolableList.Add(poolable);
             return poolable;
         }
 
@@ -83,7 +82,6 @@ public class PoolManager
     }
     #endregion
 
-    public List<Poolable> poolableList { get; private set; } = new List<Poolable>();
     Dictionary<string, Pool> _pool = new Dictionary<string, Pool>();
     Transform _root = null;
 
@@ -140,16 +138,11 @@ public class PoolManager
 
     public void CollectPool()
     {
-        foreach(Poolable poolable in poolableList)
+        for(int i = 0; i < Managers.Game.mobs.Count; i++)
         {
-            if(poolable.IsUsing)
-            {
-                poolable.IsUsing = false;
-                Push(poolable);
-            }
+            if (Managers.Game.mobs[i].GetComponent<Poolable>())
+                Push(Managers.Game.mobs[i].GetComponent<Poolable>());
         }
-
-        poolableList.Clear();
     }
 
     public void Clear()
@@ -158,6 +151,5 @@ public class PoolManager
             GameObject.Destroy(child);
 
         _pool.Clear();
-        poolableList.Clear();
     }
 }

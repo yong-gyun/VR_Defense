@@ -47,4 +47,10 @@ public class Managers : MonoBehaviour
             Sound.Init();
         }
     }
+
+    public static void Clear()
+    {
+        Pool.Clear();
+        Scene.Clear();
+    }
 }

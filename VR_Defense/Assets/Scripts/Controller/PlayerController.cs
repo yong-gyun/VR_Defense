@@ -6,12 +6,12 @@ public class PlayerController : MonoBehaviour
 {
     private Transform r_firePos;
     private Transform l_firePos;
-    public float damage { get; set; } = 10;
-    public float fireSpeed { get; set; } = 0.8f;
+    public float damage { get; set; } = 7;
+    public float fireSpeed { get; set; } = 0.5f;
     public GameObject rightGun { get; set; }
     public GameObject leftGun { get; set; }
     private bool isRightFire = false;
-    private bool isLeftFire = false;
+    //private bool isLeftFire = false;
 
     private void Start()
     {
@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if(OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.RHand))
+        if(OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.RHand))
             StartCoroutine(RightFire());
         //else if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.LHand))
         //    StartCoroutine(LeftFire());
@@ -39,18 +39,18 @@ public class PlayerController : MonoBehaviour
         //r_Crosshair.SetDirection(ARAVRInput.Controller.LTouch);
         r_firePos = Util.FindChild(rightGun, "FirePos", true).transform;
         //l_firePos = Util.FindChild(leftGun, "FirePos", true).transform;
-        damage = 8;
     }
 
 
     IEnumerator RightFire()
     {
-        if (isRightFire == true)
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() || isRightFire == true)
             yield break;
 
         Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
         RaycastHit hit;
 
+        ARAVRInput.PlayVibration(ARAVRInput.Controller.RTouch);
         GameObject shotParticle = Managers.Resource.Instantiate($"Effect/ShotParticle", r_firePos.position, Quaternion.Euler(-90, 0, 0));
         Managers.Sound.PlaySoundEffect(Define.SoundEffect.Fire);
 

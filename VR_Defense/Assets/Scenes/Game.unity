@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -761,7 +761,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &53338043
 Canvas:
   m_ObjectHideFlags: 0
@@ -2135,6 +2135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2572e959b6308204aa845fe267afc09c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mobs: []
 --- !u!114 &353135957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4293,6 +4294,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 618e602bbee3b6f48a704309a26f592d, type: 3}
+--- !u!20 &786378487 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8727562775794427651, guid: 618e602bbee3b6f48a704309a26f592d, type: 3}
+  m_PrefabInstance: {fileID: 786378486}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &817251428
 GameObject:
   m_ObjectHideFlags: 0
@@ -69846,9 +69852,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6601804403266640109}
   - component: {fileID: 6601804403266640110}
+  - component: {fileID: 6601804403266640112}
+  - component: {fileID: 6601804403266640111}
   m_Layer: 0
   m_Name: Tower
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69890,6 +69898,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa90a8e57fd42d543b3e4afa98e43681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &6601804403266640111
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6601804403266640108}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 12, y: 14.139755, z: 7.8387184}
+  m_Center: {x: 0, y: 6.5698776, z: -3.4193597}
+--- !u!54 &6601804403266640112
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6601804403266640108}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &6601804403284220896
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70525,6 +70562,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7741893560442513139, guid: 5d3ceeaccd29d41419da044a8f7dcd66, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 786378487}
     - target: {fileID: 7741893560442513143, guid: 5d3ceeaccd29d41419da044a8f7dcd66, type: 3}
       propertyPath: m_Name
       value: UI_Interface

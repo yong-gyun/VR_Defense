@@ -64,7 +64,8 @@ public class Define
         Game,
         Boss,
         Clear,
-        Over
+        Over, 
+        Heal,
     }
 
     public enum SoundEffect
@@ -76,6 +77,8 @@ public class Define
         Damage,
         ExplosionTower,
         Fireball,
+        Buy,
+        Upgrade,
         MaxCount
     }
 

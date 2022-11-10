@@ -11,4 +11,6 @@ public class SceneManagerEx
     {
         SceneManager.LoadScene(scene.ToString());
     }
+
+    public void Clear() { CurrentScene.Clear(); }
 }

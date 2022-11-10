@@ -8,19 +8,16 @@ public class UI_WorldSpace : UI_Base
     {
         Init();
     }
-
+    
     protected virtual void Start()
     {
         gameObject.AddComponent<OVRRaycaster>().pointer = Managers.Input.LaserPointer.gameObject;
-        Canvas canvas = Util.GetOrAddComponent<Canvas>(gameObject);
-        canvas.renderMode = RenderMode.WorldSpace;
-        canvas.worldCamera = Camera.main;
     }
-
-    
 
     public override void Init()
     {
-
+        Canvas canvas = Util.GetOrAddComponent<Canvas>(gameObject);
+        canvas.renderMode = RenderMode.WorldSpace;
+        canvas.worldCamera = Camera.main;
     }
 }
