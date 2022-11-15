@@ -89,4 +89,10 @@ public class Define
         Over, 
         MaxCount
     }
+
+    public enum Hit
+    {
+        Bullet,
+        Bomb
+    }
 }

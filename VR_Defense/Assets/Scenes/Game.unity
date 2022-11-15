@@ -4292,7 +4292,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8727562776609343947, guid: 618e602bbee3b6f48a704309a26f592d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 618e602bbee3b6f48a704309a26f592d, type: 3}
 --- !u!20 &786378487 stripped
 Camera:
@@ -69909,8 +69910,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 12, y: 14.139755, z: 7.8387184}
-  m_Center: {x: 0, y: 6.5698776, z: -3.4193597}
+  m_Size: {x: 12, y: 14.139755, z: 6.2483788}
+  m_Center: {x: 0, y: 6.5698776, z: -2.6241899}
 --- !u!54 &6601804403266640112
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -70216,7 +70217,8 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 22
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4969434802242323107, guid: fa19e72b0d77c8144b80b4143b47689e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fa19e72b0d77c8144b80b4143b47689e, type: 3}
 --- !u!4 &6601804403305250981 stripped
 Transform:

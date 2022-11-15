@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
         {
             if (hit.transform.gameObject.CompareTag("Mob"))
             {
-                hit.transform.GetComponent<MobBase>().OnDamaged(damage);
+                hit.transform.GetComponent<MobBase>().OnDamaged(damage, Define.Hit.Bullet);
             }
 
             GameObject hitParticle = Managers.Resource.Instantiate("Effect/HitParticle", hit.point, Quaternion.identity);

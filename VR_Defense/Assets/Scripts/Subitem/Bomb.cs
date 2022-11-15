@@ -47,7 +47,7 @@ public class Bomb : MonoBehaviour
         for(int i = 0; i < mobs.Count; i++)
         {
             Debug.Log($"damaged {mobs[i]}");
-            mobs[i].OnDamaged(_damage);
+            mobs[i].OnDamaged(_damage, Define.Hit.Bomb);
         }
     }
 

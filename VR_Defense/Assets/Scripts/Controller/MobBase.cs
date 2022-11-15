@@ -136,7 +136,7 @@ public class MobBase : MonoBehaviour
         }
     }
 
-    public virtual void OnDamaged(float damage)
+    public virtual void OnDamaged(float damage, Define.Hit hit = Define.Hit.Bullet)
     {
         if (_state == Define.State.Die)
             return;
@@ -152,6 +152,9 @@ public class MobBase : MonoBehaviour
         if (_hp <= 0)
         {
             State = Define.State.Die;
+
+            if (hit == Define.Hit.Bomb)
+                _myGold = (4 / 10) * _myGold;
             Managers.Game.CurrentGold += _myGold;
             Managers.Game.CurrentScore += _myScore;
         }

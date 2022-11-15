@@ -241,7 +241,7 @@ public static class ARAVRInput
     public static void PlayVibration(Controller hand)
     {
 #if Oculus
-        PlayVibration(0.06f, 0.5f, 0.5f, hand);
+        PlayVibration(0.06f, 1f, 1f, hand);
 #endif
     }
 

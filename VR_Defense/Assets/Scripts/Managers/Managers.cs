@@ -45,6 +45,7 @@ public class Managers : MonoBehaviour
             Data.Init();
             Pool.Init();
             Sound.Init();
+            Game.Init();
         }
     }
 
@@ -52,5 +53,13 @@ public class Managers : MonoBehaviour
     {
         Pool.Clear();
         Scene.Clear();
+    }
+
+    private void OnApplicationQuit()
+    {
+        for(int i = 0; i < Managers.Game.ScoreList.Count; i++)
+        {
+            PlayerPrefs.SetInt($"Rank{i + 1}", Managers.Game.ScoreList[i]);
+        }
     }
 }

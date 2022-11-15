@@ -13,7 +13,7 @@ public class CrabController : MobBase
         _myScore = 20;
     }
 
-    public override void OnDamaged(float damage)
+    public override void OnDamaged(float damage, Define.Hit hit = Define.Hit.Bullet)
     {
         damage = (7f / 10f) * damage;
         base.OnDamaged(damage);

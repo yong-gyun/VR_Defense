@@ -62,7 +62,7 @@ public class BossController : MobBase
     }
     public void Init()
     {
-        _maxHP = 300;
+        _maxHP = 1000;
         _speed = 5;
         _attackRange = 25;
         _damage = 30;
@@ -71,7 +71,7 @@ public class BossController : MobBase
         _state = Define.State.Move;
         _agent.speed = _speed;
         _agent.avoidancePriority = 15;
-        _myScore += 5000;
+        _myScore = 5000;
 
         StartCoroutine(Healing());
     }
@@ -121,7 +121,7 @@ public class BossController : MobBase
         State = Define.State.Idle;
     }
 
-    public override void OnDamaged(float damage)
+    public override void OnDamaged(float damage, Define.Hit hit)
     {
         if (_state == Define.State.Die)
             return;

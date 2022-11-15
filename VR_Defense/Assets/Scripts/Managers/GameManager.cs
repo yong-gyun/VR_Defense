@@ -42,20 +42,18 @@ public class GameManager
             return _player;
         }
     }
-    public Define.EndGame OverType = Define.EndGame.Unknow;
-    public List<MobBase> mobs { get; set; } = new List<MobBase>(); 
+
+    public List<MobBase> mobs { get; set; } = new List<MobBase>();
+    public List<int> ScoreList { get; private set; } = new List<int>();
     public int CurrentScore { get; set; } = 0;
-    public int CurrentGold { get; set; } = 0;
+    public int CurrentGold { get; set; } = 0; 
     Tower _tower = null;
     PlayerController _player = null;
-    int _userCount = 0;
 
-    public void Save()
+    public void Init()
     {
-        PlayerPrefs.SetInt("UserCount", _userCount);        
+        ScoreList = Managers.Data.ScoreData;
     }
-
-    public PlayerController GetPlayer() { return _player; }
 
     public void Over()
     {
@@ -72,6 +70,19 @@ public class GameManager
         UI_Over overUI = Managers.UI.MakeWorldSpaceUI<UI_Over>(Managers.UI.Root.transform);
         overUI.transform.position = new Vector3(-1, 20, 0.5f);
         _player = null;
+    }
+
+    public void SetRank()
+    {
+
+        ScoreList.Add(CurrentScore);
+        ScoreList.Sort((a, b) => b.CompareTo(a));
+
+        if (ScoreList.Count > 4)
+        {
+            for (int i = 5; i < ScoreList.Count; i++)
+                ScoreList.Remove(ScoreList[i]);
+        }
     }
 
     public void Clear()

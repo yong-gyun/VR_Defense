@@ -416,5 +416,6 @@ public class PoolSpawning : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
         Managers.Game.Over();
+        Managers.Game.SetRank();
     }
 }
